@@ -61,18 +61,47 @@ await page.waitForFunction(() => document.getElementById('cortina').hasAttribute
 const ov = await page.evaluate(() => getComputedStyle(document.body).overflow);
 if (ov !== 'hidden') ok('el scroll queda libre tras la cortina'); else mal('el body sigue con overflow:hidden');
 
-// el plano tiene que haber pintado algo de verdad
-await page.waitForTimeout(4600);
+// el plano tiene que haber pintado algo de verdad.
+// La coreografía dura 5,2 s (descenso + pausa + retroceso con los caminos),
+// así que hay que esperar a que acabe o los caminos aún no están.
+await page.waitForTimeout(6600);
+// Contar pixeles OPACOS ya no vale: el plano nocturno rellena el fondo, asi
+// que saldrian todos. Hay que contar los que se SALEN del color de fondo.
 const tinta = await page.evaluate(() => {
   const c = document.getElementById('plano');
   const g = c.getContext('2d');
   const d = g.getImageData(0, 0, c.width, c.height).data;
-  let n = 0;
-  for (let i = 3; i < d.length; i += 4 * 37) if (d[i] > 12) n++;
-  return { pintados: n, total: Math.floor(d.length / (4 * 37)), w: c.width, h: c.height };
+  const fondo = [20, 15, 58];               // --noche #140F3A
+  let n = 0, total = 0, rojos = 0;
+  for (let i = 0; i < d.length; i += 4 * 37) {
+    total++;
+    const dif = Math.abs(d[i] - fondo[0]) + Math.abs(d[i + 1] - fondo[1]) + Math.abs(d[i + 2] - fondo[2]);
+    if (dif > 24) n++;
+    if (d[i] > 180 && d[i + 1] < 140 && d[i + 2] < 120) rojos++;   // bermellon: caminos y chincheta
+  }
+  return { tinta: n, total, rojos, w: c.width, h: c.height };
 });
-if (tinta.pintados > tinta.total * 0.02) ok(`el plano dibuja el callejero (${tinta.pintados} muestras con tinta de ${tinta.total}, lienzo ${tinta.w}x${tinta.h})`);
-else mal(`el plano está casi vacío (${tinta.pintados}/${tinta.total})`);
+if (tinta.tinta > tinta.total * 0.05) ok(`el plano dibuja el callejero (${tinta.tinta} muestras distintas del fondo de ${tinta.total})`);
+else mal(`el plano está casi vacío (${tinta.tinta}/${tinta.total} distintas del fondo)`);
+if (tinta.rojos > 20) ok(`los caminos se dibujan (${tinta.rojos} muestras en bermellón)`);
+else mal(`no se ven los caminos: solo ${tinta.rojos} muestras en bermellón`);
+
+// las chapas de los minutos no pueden montarse sobre el titular ni salirse
+const chapas = await page.evaluate(() => {
+  const c = document.getElementById('plano');
+  const ch = c.__chapas || [];
+  const h1 = document.querySelector('.hero h1').getBoundingClientRect();
+  const lz = c.getBoundingClientRect();
+  const pisan = ch.filter((p) => {
+    const x = lz.left + p.x, y = lz.top + p.y;
+    return x < h1.right && x + p.w > h1.left && y < h1.bottom && y + p.h > h1.top;
+  }).length;
+  const fuera = ch.filter((p) => p.x < 0 || p.y < 0 || p.x + p.w > lz.width || p.y + p.h > lz.height).length;
+  return { n: ch.length, pisan, fuera };
+});
+if (chapas.n >= 4 && !chapas.pisan && !chapas.fuera)
+  ok(`${chapas.n} chapas de minutos colocadas, ninguna pisa el titular ni se sale`);
+else mal(`chapas: ${chapas.n} dibujadas, ${chapas.pisan} sobre el titular, ${chapas.fuera} fuera del lienzo`);
 
 // Titular: innerText miente (existe aunque esté tapado por overflow:hidden).
 // Hay que medir cuánto se desvía cada palabra respecto de su caja recortadora.
@@ -209,7 +238,7 @@ else {
 await page.addInitScript(() => { history.scrollRestoration = 'manual'; });
 await page.goto(BASE + '?captura=1', { waitUntil: 'load' });
 await page.waitForFunction(() => document.getElementById('cortina').hasAttribute('hidden'), null, { timeout: 8000 }).catch(() => {});
-await page.waitForTimeout(5200);
+await page.waitForTimeout(6600);
 await page.screenshot({ path: 'pruebas/escritorio-hero.jpg', quality: 80, type: 'jpeg' });
 await page.screenshot({ path: 'pruebas/escritorio-completa.jpg', fullPage: true, quality: 72, type: 'jpeg' });
 
@@ -221,7 +250,10 @@ const consolaM = [];
 pm.on('console', (m) => { if (m.type() === 'error') consolaM.push(m.text()); });
 pm.on('pageerror', (e) => consolaM.push('pageerror: ' + e.message));
 await pm.goto(BASE, { waitUntil: 'load' });
-await pm.waitForTimeout(5200);
+// hay que esperar a la cortina MÁS la coreografía del plano (5,2 s), que no
+// empieza hasta que la cortina se va
+await pm.waitForFunction(() => document.getElementById('cortina').hasAttribute('hidden'), null, { timeout: 9000 }).catch(() => {});
+await pm.waitForTimeout(6600);
 
 const anchoH = await pm.evaluate(() => {
   const vp = 390;
@@ -258,6 +290,25 @@ const h1m = await pm.evaluate(() => {
 });
 if (h1m.peor <= 3 && h1m.alto > 20) ok('el titular se ve en móvil (alto ' + h1m.alto + 'px, desvío ' + h1m.peor + 'px)');
 else mal('titular escondido en móvil: ' + JSON.stringify(h1m));
+
+// aquí es donde la chapa de la Catedral se montaba sobre «de la ciudad»
+const chapasM = await pm.evaluate(() => {
+  const c = document.getElementById('plano');
+  const ch = c.__chapas || [];
+  const h1 = document.querySelector('.hero h1').getBoundingClientRect();
+  const lz = c.getBoundingClientRect();
+  return {
+    n: ch.length,
+    pisan: ch.filter((p) => {
+      const x = lz.left + p.x, y = lz.top + p.y;
+      return x < h1.right && x + p.w > h1.left && y < h1.bottom && y + p.h > h1.top;
+    }).length,
+    fuera: ch.filter((p) => p.x < 0 || p.x + p.w > lz.width).length,
+  };
+});
+if (chapasM.n >= 3 && !chapasM.pisan && !chapasM.fuera)
+  ok(`${chapasM.n} chapas en móvil, ninguna pisa el titular ni se sale`);
+else mal(`chapas en móvil: ${chapasM.n}, ${chapasM.pisan} sobre el titular, ${chapasM.fuera} fuera`);
 
 // menú móvil
 await pm.click('#menu-btn');

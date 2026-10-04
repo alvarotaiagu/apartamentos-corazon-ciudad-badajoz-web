@@ -26,9 +26,9 @@
       <path id="c-tejado" d="M8 40 L50 7 L92 40" stroke="#D8241A" stroke-width="5"
             stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
       <!-- manos -->
-      <path id="c-mano-i" d="M30 86 L30 56 Q30 46 39 46 L46 46" stroke="#fff" stroke-width="5"
+      <path id="c-mano-i" d="M30 86 L30 56 Q30 46 39 46 L46 46" stroke="#302490" stroke-width="5"
             stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
-      <path id="c-mano-d" d="M70 86 L70 56 Q70 46 61 46 L54 46" stroke="#fff" stroke-width="5"
+      <path id="c-mano-d" d="M70 86 L70 56 Q70 46 61 46 L54 46" stroke="#302490" stroke-width="5"
             stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
       <!-- corazón -->
       <path id="c-corazon" d="M50 73 C38 64 36 55 42 51 C46 48 50 51 50 55 C50 51 54 48 58 51 C64 55 62 64 50 73 Z"
@@ -42,7 +42,14 @@
 <header class="cab" id="cab">
   <div class="cab__env">
     <a class="marca" href="#" aria-label="El Corazón de la Ciudad, inicio">
-      <img src="img/marca.svg" alt="" width="100" height="92">
+      <svg viewBox="0 0 100 92" aria-hidden="true" focusable="false">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 43 L50 11 L91 43" stroke="#D8241A" stroke-width="7.5"/>
+          <path d="M28 85 L28 59 Q28 49.5 37.5 49.5 L45 49.5" stroke="currentColor" stroke-width="7.5"/>
+          <path d="M72 85 L72 59 Q72 49.5 62.5 49.5 L55 49.5" stroke="currentColor" stroke-width="7.5"/>
+        </g>
+        <path d="M50 77 C35.5 66.5 32.5 56 39.8 51.2 C44.8 47.9 50 51.4 50 56.2 C50 51.4 55.2 47.9 60.2 51.2 C67.5 56 64.5 66.5 50 77 Z" fill="#D8241A"/>
+      </svg>
       <span>El Corazón de la Ciudad<i>Apartamentos · Badajoz</i></span>
     </a>
     <nav class="nav" aria-label="Principal">
@@ -83,7 +90,7 @@
       <span class="l2">de la ciudad</span>
     </h1>
     <div class="hero__pie">
-      <p>Dos apartamentos de 85 m² en una calle tranquila del casco antiguo. Abres el portal y ya estás dentro de Badajoz: la Catedral a dos minutos, la Plaza Alta a siete.</p>
+      <p>Dos apartamentos de 85 m² en una calle tranquila del casco antiguo. Abres el portal y ya estás dentro de Badajoz: la Catedral a dos minutos, la Plaza Alta a ocho.</p>
       <div class="hero__acc">
         <a class="btn btn--marca" href="#apartamentos" data-iman>Ver los apartamentos</a>
         <a class="btn btn--linea" href="#a-pie" data-iman>Qué hay alrededor</a>
@@ -96,14 +103,14 @@
 <div class="banda" aria-label="Distancias andando desde el portal">
   <div class="banda__pista" id="banda-pista">
     <div class="banda__grupo" data-banda>
-      <span class="banda__it"><b>2 min</b> Catedral de San Juan <i>102 m</i></span><span class="banda__sep">◆</span>
-      <span class="banda__it"><b>2 min</b> Plaza de España <i>101 m</i></span><span class="banda__sep">◆</span>
-      <span class="banda__it"><b>3 min</b> Ayuntamiento <i>161 m</i></span><span class="banda__sep">◆</span>
-      <span class="banda__it"><b>5 min</b> La Giralda <i>329 m</i></span><span class="banda__sep">◆</span>
-      <span class="banda__it"><b>5 min</b> Museo de Bellas Artes <i>340 m</i></span><span class="banda__sep">◆</span>
-      <span class="banda__it"><b>7 min</b> Plaza Alta <i>437 m</i></span><span class="banda__sep">◆</span>
-      <span class="banda__it"><b>10 min</b> Alcazaba <i>643 m</i></span><span class="banda__sep">◆</span>
-      <span class="banda__it"><b>14 min</b> Puente de Palmas <i>907 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>2 min</b> Catedral de San Juan <i>77 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>2 min</b> Plaza de España <i>139 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>3 min</b> Ayuntamiento <i>175 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>5 min</b> La Giralda <i>389 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>5 min</b> Museo de Bellas Artes <i>389 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>8 min</b> Plaza Alta <i>565 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>9 min</b> Puerta de Palmas <i>664 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>10 min</b> Alcazaba <i>769 m</i></span><span class="banda__sep">◆</span>
     </div>
   </div>
 </div>
@@ -130,7 +137,7 @@
           <div><b>2</b><span>Apartamentos</span></div>
           <div><b>85 m²</b><span>Cada uno</span></div>
           <div><b>6</b><span>Plazas por casa</span></div>
-          <div><b>102 m</b><span>A la Catedral</span></div>
+          <div><b>77 m</b><span>A la Catedral</span></div>
         </div>
       </div>
       <figure class="portal__foto" data-sube style="margin:0">
@@ -244,7 +251,8 @@
       <p class="rotulo"><b>03</b> A pie de todo</p>
       <h2 class="titular">Badajoz entero,<br><em>sin coger el coche</em></h2>
       <p class="entradilla" style="margin-top:1.4rem">
-        Los minutos son andando desde el portal. No hay ninguno que pase de un cuarto de hora.
+        Los metros y los minutos están medidos sobre el callejero, calle a calle desde el
+        portal, no en línea recta. Ninguno llega a los diez minutos.
       </p>
     </div>
 
@@ -257,7 +265,7 @@
             <p>Sales del portal, giras y ya la ves. La Catedral de San Juan Bautista es una
                fortaleza con aire de iglesia: torre maciza, almenas y un claustro gótico dentro.
                Alrededor, la Plaza de España y el Ayuntamiento con su fachada de colores.</p>
-            <p class="sitio__metros">102 m en línea recta · Plaza de España a 101 m</p>
+            <p class="sitio__metros">77 m andando · Plaza de España a 139 m</p>
           </div>
           <div class="sitio__foto">
             <img src="img/calle-catedral-1600.jpg" alt="Calle del casco antiguo de Badajoz con la torre de la Catedral al fondo" loading="lazy" width="1600" height="1066">
@@ -272,7 +280,7 @@
             <p>La Giralda de Badajoz es un capricho de ladrillo rojo y azulejo que imita a la de
                Sevilla, levantado a principios del siglo pasado. Está en el corazón de la zona de
                tapas: Menacho, Zurbarán, San Juan y las plazas que las unen.</p>
-            <p class="sitio__metros">329 m en línea recta · Museo de Bellas Artes a 340 m</p>
+            <p class="sitio__metros">389 m andando · Museo de Bellas Artes a 389 m</p>
           </div>
           <div class="sitio__foto">
             <img src="img/giralda-1600.jpg" alt="La Giralda de Badajoz, edificio modernista de ladrillo rojo" loading="lazy" width="1600" height="1052">
@@ -282,12 +290,12 @@
       <li>
         <article class="sitio">
           <div class="sitio__txt">
-            <p class="sitio__min"><b>7</b><span>minutos andando</span></p>
+            <p class="sitio__min"><b>8</b><span>minutos andando</span></p>
             <h3>La Plaza Alta y la Alcazaba</h3>
             <p>La estampa de Badajoz: fachadas rojas con esgrafiado blanco a un lado, arquería de
                piedra al otro. Justo encima arranca la Alcazaba almohade, la más grande de Europa,
                con sus murallas y el jardín de la Galera.</p>
-            <p class="sitio__metros">437 m en línea recta · Alcazaba a 643 m</p>
+            <p class="sitio__metros">565 m andando · la Alcazaba, a 769 m</p>
           </div>
           <div class="sitio__foto">
             <img src="img/plaza-alta-1600.jpg" alt="La Plaza Alta de Badajoz con sus fachadas rojas y el esgrafiado blanco" loading="lazy" width="1600" height="861">
@@ -297,12 +305,13 @@
       <li>
         <article class="sitio">
           <div class="sitio__txt">
-            <p class="sitio__min"><b>14</b><span>minutos andando</span></p>
-            <h3>El Puente de Palmas y el Guadiana</h3>
-            <p>Cruzando la Puerta de Palmas se llega al puente del siglo XVI, treinta y dos ojos
-               de granito sobre el río. Al atardecer se enciende entero y es el paseo que hace
-               todo el mundo en Badajoz, turistas o no.</p>
-            <p class="sitio__metros">907 m en línea recta · Puerta de Palmas a 615 m</p>
+            <p class="sitio__min"><b>9</b><span>minutos andando</span></p>
+            <h3>La Puerta de Palmas y el Guadiana</h3>
+            <p>La puerta de los dos torreones es la postal de la ciudad, y justo detrás arranca
+               el puente de Palmas: treinta y dos ojos de granito del siglo XVI sobre el río.
+               Al atardecer se enciende entero y es el paseo que hace todo el mundo en Badajoz,
+               turistas o no.</p>
+            <p class="sitio__metros">664 m andando hasta la puerta · el puente empieza ahí mismo</p>
           </div>
           <div class="sitio__foto">
             <img src="img/puente-palmas-1600.jpg" alt="El puente de Palmas sobre el Guadiana al atardecer" loading="lazy" width="1600" height="1077">
@@ -403,7 +412,14 @@
     <div class="pie__rej">
       <div>
         <a class="marca" href="#" style="margin-bottom:1rem">
-          <img src="img/marca.svg" alt="" width="100" height="92">
+          <svg viewBox="0 0 100 92" aria-hidden="true" focusable="false">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 43 L50 11 L91 43" stroke="#D8241A" stroke-width="7.5"/>
+              <path d="M28 85 L28 59 Q28 49.5 37.5 49.5 L45 49.5" stroke="currentColor" stroke-width="7.5"/>
+              <path d="M72 85 L72 59 Q72 49.5 62.5 49.5 L55 49.5" stroke="currentColor" stroke-width="7.5"/>
+            </g>
+            <path d="M50 77 C35.5 66.5 32.5 56 39.8 51.2 C44.8 47.9 50 51.4 50 56.2 C50 51.4 55.2 47.9 60.2 51.2 C67.5 56 64.5 66.5 50 77 Z" fill="#D8241A"/>
+          </svg>
           <span>El Corazón de la Ciudad<i>Apartamentos · Badajoz</i></span>
         </a>
         <p>Dos apartamentos turísticos de 85 m² en la calle Ramón Albarrán, en pleno casco
@@ -475,6 +491,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script src="js/callejero.js"></script>
+<script src="js/manzanas.js"></script>
 <script src="js/plano.js"></script>
 <script src="js/main.js"></script>
 </body>

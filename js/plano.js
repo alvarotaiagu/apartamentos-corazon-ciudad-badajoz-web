@@ -1,9 +1,16 @@
 /* ------------------------------------------------------------------
-   El plano del hero.
-   Dibuja el callejero REAL del casco antiguo de Badajoz saliendo del
-   portal, como si alguien lo estuviese trazando a mano en ese momento.
-   Los datos vienen de OpenStreetMap (js/callejero.js), en metros
-   respecto a la calle Ramon Albarran, 9.
+   El plano del hero · «Cartografía» de noche.
+
+   Coreografía, en este orden:
+     1. La cámara cae desde muy arriba hasta el portal, mientras el
+        callejero real se traza saliendo de la chincheta.
+     2. Las manzanas del casco antiguo aparecen en silueta.
+     3. Breve pausa a ras de calle.
+     4. La cámara se retira y, al hacerlo, salen del portal los
+        recorridos a pie REALES con sus minutos. Se retira justo para
+        que quepan: si no, se saldrían de pantalla.
+
+   Datos de OpenStreetMap (ODbL): js/callejero.js y js/manzanas.js.
    ------------------------------------------------------------------ */
 (function () {
   'use strict';
@@ -11,40 +18,38 @@
   const lienzo = document.getElementById('plano');
   if (!lienzo || !window.CALLEJERO) return;
 
-  const ctx = lienzo.getContext('2d', { alpha: true });
+  const ctx = lienzo.getContext('2d');
   const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const TINTA   = '48,36,144';     // indigo de la marca
-  const MARCA   = '216,36,26';     // bermellon
-  const RADIO_M = 470;             // metros que caben en el radio visible
+  // --- tintas de noche ---
+  const VIA     = '197,205,255';
+  const MANZANA = 'rgba(122,132,218,.17)';
+  const BORDE   = 'rgba(152,162,242,.30)';
+  const MARCA   = '255,92,72';
+  const FONDO   = '#140F3A';
+  const ALFA    = { 4: .9, 3: .85, 2: .6, 1: .34 };
 
-  // El callejero llega hasta 1050 m, pero el hero solo encuadra ~470 m: se
-  // descarta lo que nunca va a entrar, que si no se dibuja fuera de pantalla.
-  const CORTE = RADIO_M * 1.7;
+  const CERCA = 400;          // metros de encuadre al posarse en el portal
+  const DESC = 0.40, PAUSA = 0.50;   // tramos de la coreografía
 
-  // --- trazos: [peso, dmin, x0,y0, x1,y1, ...] -> objetos ---
-  const trazos = window.CALLEJERO
-    .filter((a) => a[1] <= CORTE)
-    .map((a) => {
-      const pts = [];
-      for (let i = 2; i < a.length; i += 2) pts.push(a[i], a[i + 1]);
-      return { w: a[0], d: a[1], p: pts, largo: 0 };
-    });
-
-  // longitud de cada trazo, para repartir bien el dibujado
-  for (const t of trazos) {
+  const TRAZOS = window.CALLEJERO.map((a) => {
+    const p = [];
+    for (let i = 2; i < a.length; i += 2) p.push(a[i], a[i + 1]);
     let L = 0;
-    for (let i = 2; i < t.p.length; i += 2) {
-      L += Math.hypot(t.p[i] - t.p[i - 2], t.p[i + 1] - t.p[i - 1]);
-    }
-    t.largo = L;
-  }
+    for (let i = 2; i < p.length; i += 2) L += Math.hypot(p[i] - p[i - 2], p[i + 1] - p[i - 1]);
+    return { w: a[0], d: a[1], p, largo: L };
+  });
 
-  const DMAX = trazos.reduce((m, t) => Math.max(m, t.d), 1);
+  const MANZ = (window.MANZANAS || []).map((a) => {
+    const p = [];
+    for (let i = 1; i < a.length; i += 2) p.push(a[i], a[i + 1]);
+    return { d: a[0], p };
+  });
 
-  let W = 0, H = 0, dpr = 1, esc = 1, cx = 0, cy = 0;
-  let base = null, bctx = null;   // capa con lo ya terminado
-  let hechos = 0;                 // cuantos trazos hay ya estampados en la base
+  const TODAS = (window.RUTAS || []).filter((r) => r.hero);
+
+  let W = 0, H = 0, dpr = 1, gf = 1, util = 1000, lejos = 1080, cyFin = 0.62;
+  let rutas = TODAS, base = null, posado = false, suelo = 400;
 
   function medir() {
     const r = lienzo.getBoundingClientRect();
@@ -53,231 +58,249 @@
     H = Math.max(1, Math.round(r.height));
     lienzo.width = Math.round(W * dpr);
     lienzo.height = Math.round(H * dpr);
-
-    // el plano se encuadra para que quepa el radio util; el portal queda
-    // algo por encima del centro, con sitio abajo para el titular
-    const util = Math.max(W, H * 1.08);
-    esc = (util * 0.62) / RADIO_M;
-    cx = W * 0.5;
-    // en pantallas estrechas el titular ocupa la mitad de abajo, así que la
-    // chincheta sube para no quedar pisada por el texto
-    cy = W < 760 ? H * 0.27 : H * 0.40;
     gf = Math.min(1.5, Math.max(0.95, W / 1000));
+    util = Math.max(W, H * 1.08);
+    // encuadre final: tiene que caber lo más lejos que se enseña (la Alcazaba,
+    // a 769 m al norte, y la Puerta de Palmas, a 664 m al oeste)
+    lejos = W < 760 ? 950 : 1250;
+    cyFin = 0.6;
 
-    base = document.createElement('canvas');
-    base.width = lienzo.width;
-    base.height = lienzo.height;
-    bctx = base.getContext('2d');
-    bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    hechos = 0;
+    // Solo se enseñan los caminos que de verdad CABEN en el encuadre final.
+    // En móvil la Puerta de Palmas se sale por la izquierda, así que se cae
+    // sola en vez de dibujar una etiqueta pegada al borde.
+    const escFin = (util * 0.62) / lejos;
+    const cx = W / 2, cy = H * cyFin;
+    rutas = TODAS.filter((ru) => {
+      const f = ru.p[ru.p.length - 1];
+      const x = cx + f[0] * escFin, y = cy + f[1] * escFin;
+      // el margen de arriba es corto porque, si la chapa no cabe encima del
+      // punto, se coloca debajo con su hilo; lo que no vale es salirse
+      return x > 70 && x < W - 70 && y > 50 && y < H - 60;
+    });
+
+    // Hasta dónde pueden bajar las chapas: se mide el bloque de texto real en
+    // vez de usar una fracción a ojo, que en móvil se quedaba corta y la
+    // chapa de la Catedral acababa encima de «de la ciudad».
+    const txt = document.querySelector('.hero__env');
+    suelo = txt
+      ? Math.max(150, txt.getBoundingClientRect().top - r.top - 14)
+      : H * 0.55;
+
+    base = null; posado = false;
   }
 
+  // --- cámara: dónde está y cuánto abarca en cada momento ---
+  function camara(t) {
+    const suave = (k) => 1 - Math.pow(1 - k, 3);
+    if (t < DESC) {
+      const k = suave(t / DESC);
+      return { radio: CERCA / (0.12 + 0.88 * k), cy: 0.42 };
+    }
+    if (t < PAUSA) return { radio: CERCA, cy: 0.42 };
+    const k = suave((t - PAUSA) / (1 - PAUSA));
+    return { radio: CERCA + (lejos - CERCA) * k, cy: 0.42 + (cyFin - 0.42) * k };
+  }
+
+  let esc = 1, cx = 0, cy = 0;
   const px = (x) => cx + x * esc;
   const py = (y) => cy + y * esc;
 
-  function estiloTrazo(c, w, alfa) {
-    c.strokeStyle = 'rgba(' + TINTA + ',' + alfa + ')';
-    c.lineWidth = w;
-    c.lineCap = 'round';
-    c.lineJoin = 'round';
-  }
-
-  // grosor y opacidad segun la jerarquia de la via.
-  // El factor compensa las pantallas grandes: con el mismo grosor en px, un
-  // plano a 1440 se ve lavado y a 390 se ve bien.
-  let gf = 1;
   function grosor(w) {
-    if (w >= 4) return 3.3 * gf;   // muralla
-    if (w === 3) return 2.5 * gf;  // via principal
-    if (w === 2) return 1.65 * gf; // calle
-    return 1.0 * gf;               // peatonal
-  }
-  function alfa(w, t) {
-    const a = w >= 3 ? 0.62 : w === 2 ? 0.44 : 0.26;
-    return a * t;
+    const g = w >= 4 ? 3.3 : w === 3 ? 2.5 : w === 2 ? 1.65 : 1.0;
+    return g * gf;
   }
 
-  // dibuja un trazo hasta la fraccion f (0..1) de su longitud
   function trazar(c, t, f) {
     const p = t.p;
     c.beginPath();
     c.moveTo(px(p[0]), py(p[1]));
     if (f >= 1) {
       for (let i = 2; i < p.length; i += 2) c.lineTo(px(p[i]), py(p[i + 1]));
-      c.stroke();
-      return;
+      c.stroke(); return;
     }
     let queda = t.largo * f;
     for (let i = 2; i < p.length; i += 2) {
       const ax = p[i - 2], ay = p[i - 1], bx = p[i], by = p[i + 1];
       const seg = Math.hypot(bx - ax, by - ay);
-      if (seg <= queda) {
-        c.lineTo(px(bx), py(by));
-        queda -= seg;
-      } else {
-        const k = seg ? queda / seg : 0;
-        c.lineTo(px(ax + (bx - ax) * k), py(ay + (by - ay) * k));
-        break;
-      }
+      if (seg <= queda) { c.lineTo(px(bx), py(by)); queda -= seg; }
+      else { const k = seg ? queda / seg : 0;
+        c.lineTo(px(ax + (bx - ax) * k), py(ay + (by - ay) * k)); break; }
     }
     c.stroke();
   }
 
-  // --- la chincheta: tejado + corazon, como el logo ---
-  function chincheta(c, pulso) {
-    const x = px(0), y = py(0);
-    const r = 11 * gf;
+  function manzanas(c, t) {
+    if (t <= 0) return;
+    c.save();
+    c.globalAlpha = Math.min(1, t);
+    c.fillStyle = MANZANA; c.strokeStyle = BORDE; c.lineWidth = 0.6 * gf;
+    for (const m of MANZ) {
+      c.beginPath();
+      c.moveTo(px(m.p[0]), py(m.p[1]));
+      for (let i = 2; i < m.p.length; i += 2) c.lineTo(px(m.p[i]), py(m.p[i + 1]));
+      c.closePath(); c.fill(); c.stroke();
+    }
+    c.restore();
+  }
 
-    // dos ondas de halo, desfasadas
+  function caminos(c, t) {
+    if (t <= 0 || !rutas.length) return;
+    const chapas = [];
+    rutas.forEach((r, i) => {
+      const f = Math.max(0, Math.min(1, (t - i * 0.1) / 0.46));
+      if (f <= 0) return;
+      let L = 0;
+      for (let k = 1; k < r.p.length; k++) L += Math.hypot(r.p[k][0] - r.p[k - 1][0], r.p[k][1] - r.p[k - 1][1]);
+      let queda = L * f, fin = r.p[0];
+      c.save();
+      c.strokeStyle = 'rgba(' + MARCA + ',.95)';
+      c.lineWidth = 2.6 * gf; c.lineCap = 'round'; c.lineJoin = 'round';
+      c.setLineDash([7 * gf, 5 * gf]);
+      c.beginPath(); c.moveTo(px(r.p[0][0]), py(r.p[0][1]));
+      for (let k = 1; k < r.p.length; k++) {
+        const a = r.p[k - 1], b = r.p[k];
+        const seg = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        if (seg <= queda) { c.lineTo(px(b[0]), py(b[1])); queda -= seg; fin = b; }
+        else { const kk = seg ? queda / seg : 0;
+          fin = [a[0] + (b[0] - a[0]) * kk, a[1] + (b[1] - a[1]) * kk];
+          c.lineTo(px(fin[0]), py(fin[1])); break; }
+      }
+      c.stroke(); c.restore();
+      if (f >= 1) chapas.push({ x: px(fin[0]), y: py(fin[1]), etq: r.min + ' min · ' + r.n });
+    });
+    if (!chapas.length) return;
+
+    c.save();
+    c.font = '500 ' + (11 * gf) + 'px Jost, system-ui, sans-serif';
+    c.textBaseline = 'middle';
+    const al = 21 * gf, sep = 4 * gf, puestas = [];
+    const techo = 66;   // por debajo de la cabecera fija
+    for (const ch of chapas) {
+      const an = c.measureText(ch.etq).width + 16 * gf;
+      let ex = Math.min(Math.max(10, ch.x - an / 2), W - an - 10);
+      let ey = Math.max(techo, Math.min(ch.y - al - 11 * gf, suelo - al));
+      for (let i = 0; i < 16; i++) {
+        const choca = puestas.some((p) =>
+          ex < p.ex + p.an + sep && ex + an + sep > p.ex &&
+          ey < p.ey + al + sep && ey + al + sep > p.ey);
+        if (!choca) break;
+        ey -= al + sep;                               // busca hueco hacia arriba
+        if (ey < techo) { ey = suelo - al; ex += 18 * gf; }
+      }
+      puestas.push({ ex, ey, an });
+      c.strokeStyle = 'rgba(' + MARCA + ',.45)'; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(ex + an / 2, ey + al / 2); c.lineTo(ch.x, ch.y); c.stroke();
+      c.fillStyle = 'rgb(' + MARCA + ')';
+      c.beginPath();
+      (c.roundRect ? c.roundRect(ex, ey, an, al, 2) : c.rect(ex, ey, an, al));
+      c.fill();
+      c.fillStyle = '#fff';
+      c.fillText(ch.etq, ex + 8 * gf, ey + al / 2);
+      c.beginPath(); c.arc(ch.x, ch.y, 3.4 * gf, 0, Math.PI * 2);
+      c.fillStyle = 'rgb(' + MARCA + ')'; c.fill();
+    }
+    // las chapas se dibujan en el lienzo, así que no hay nada en el DOM que
+    // medir: se dejan aquí para que verificar.mjs compruebe que no pisan nada
+    lienzo.__chapas = puestas.map((p) => ({ x: p.ex, y: p.ey, w: p.an, h: al }));
+    c.restore();
+  }
+
+  function chincheta(c, pulso) {
+    const x = px(0), y = py(0), r = 11 * gf;
     for (const d of [0, 0.5]) {
       const p = (pulso + d) % 1;
-      c.beginPath();
-      c.arc(x, y, r + 4 + p * 30 * gf, 0, Math.PI * 2);
-      c.strokeStyle = 'rgba(' + MARCA + ',' + (0.3 * (1 - p)) + ')';
-      c.lineWidth = 1.2 * gf;
-      c.stroke();
+      c.beginPath(); c.arc(x, y, r + 4 + p * 30 * gf, 0, Math.PI * 2);
+      c.strokeStyle = 'rgba(' + MARCA + ',' + (0.34 * (1 - p)) + ')';
+      c.lineWidth = 1.2 * gf; c.stroke();
     }
-
-    // cerco claro para despegarlo del callejero
-    c.beginPath();
-    c.arc(x, y, r + 3 * gf, 0, Math.PI * 2);
-    c.fillStyle = 'rgba(239,238,244,.85)';
-    c.fill();
-
-    // punto
-    c.beginPath();
-    c.arc(x, y, r, 0, Math.PI * 2);
-    c.fillStyle = 'rgb(' + MARCA + ')';
-    c.fill();
-
-    // el tejadito de la marca, dentro
+    c.beginPath(); c.arc(x, y, r + 3 * gf, 0, Math.PI * 2);
+    c.fillStyle = 'rgba(20,15,58,.9)'; c.fill();
+    c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2);
+    c.fillStyle = 'rgb(' + MARCA + ')'; c.fill();
     c.beginPath();
     c.moveTo(x - 5.2 * gf, y + 2.2 * gf);
     c.lineTo(x, y - 3.6 * gf);
     c.lineTo(x + 5.2 * gf, y + 2.2 * gf);
-    c.strokeStyle = '#fff';
-    c.lineWidth = 2.1 * gf;
-    c.lineCap = 'round';
-    c.lineJoin = 'round';
-    c.stroke();
+    c.strokeStyle = '#fff'; c.lineWidth = 2.1 * gf;
+    c.lineCap = 'round'; c.lineJoin = 'round'; c.stroke();
   }
 
-  // --- rosa de los vientos discreta, arriba a la derecha ---
-  function rosa(c, t) {
-    if (t <= 0) return;
-    const x = W - Math.min(74, W * 0.13), y = Math.min(118, H * 0.17);
-    const R = Math.min(22, W * 0.035);
-    c.save();
-    c.globalAlpha = t * 0.5;
-    c.strokeStyle = 'rgba(' + TINTA + ',.55)';
-    c.lineWidth = 1;
-    c.beginPath(); c.arc(x, y, R, 0, Math.PI * 2); c.stroke();
-    c.beginPath();
-    c.moveTo(x, y - R - 5); c.lineTo(x, y + R + 5);
-    c.moveTo(x - R - 5, y); c.lineTo(x + R + 5, y);
-    c.stroke();
-    c.beginPath();
-    c.moveTo(x, y - R - 5);
-    c.lineTo(x - 3.6, y - 2);
-    c.lineTo(x + 3.6, y - 2);
-    c.closePath();
-    c.fillStyle = 'rgba(' + MARCA + ',.85)';
-    c.fill();
-    c.restore();
-  }
+  // dibuja todo salvo la chincheta, que late aparte
+  function escena(c, t) {
+    const cam = camara(t);
+    esc = (util * 0.62) / cam.radio;
+    cx = W / 2; cy = H * cam.cy;
 
-  // --- escala grafica abajo a la izquierda ---
-  function escala(c, t) {
-    if (t <= 0) return;
-    const m = 100;                       // 100 metros
-    const L = m * esc;
-    if (L < 36 || L > W * 0.5) return;
-    // arriba a la izquierda: abajo lo tapa el velo que da contraste al titular
-    const x = Math.max(24, W * 0.06), y = Math.min(132, H * 0.2);
-    c.save();
-    c.globalAlpha = t * 0.6;
-    c.strokeStyle = 'rgba(' + TINTA + ',.6)';
-    c.lineWidth = 1;
-    c.beginPath();
-    c.moveTo(x, y - 4); c.lineTo(x, y + 4);
-    c.moveTo(x, y); c.lineTo(x + L, y);
-    c.moveTo(x + L, y - 4); c.lineTo(x + L, y + 4);
-    c.moveTo(x + L / 2, y); c.lineTo(x + L / 2, y + 4);
-    c.stroke();
-    c.fillStyle = 'rgba(' + TINTA + ',.72)';
-    c.font = '500 9px Jost, system-ui, sans-serif';
-    c.letterSpacing = '1.5px';
-    c.fillText('100 M', x, y - 9);
-    c.restore();
-  }
+    c.fillStyle = FONDO;
+    c.fillRect(0, 0, W, H);
 
-  // ------------------------------------------------------------------
-  let t0 = 0, acabado = false, raf = 0;
-  const DUR = 3400;     // lo que tarda el frente en llegar al borde
-  const COLA = 620;     // lo que tarda cada calle en trazarse
+    manzanas(c, (t - 0.22) / 0.26);
 
-  function pintar(ahora) {
-    if (!t0) t0 = ahora;
-    const t = quieto ? 1 : Math.min(1, (ahora - t0) / DUR);
-    // el frente avanza con freno al final, como una mano que se va parando
-    const frente = (1 - Math.pow(1 - t, 2.4)) * DMAX * 1.02;
-
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, W, H);
-
-    // 1) estampa en la capa base lo que ya esta entero
-    while (hechos < trazos.length) {
-      const tr = trazos[hechos];
-      const f = (frente - tr.d) / (tr.largo * 0.55 + 30);
-      if (f < 1) break;
-      estiloTrazo(bctx, grosor(tr.w), alfa(tr.w, 1));
-      trazar(bctx, tr, 1);
-      hechos++;
-    }
-    ctx.drawImage(base, 0, 0, W, H);
-
-    // 2) solo se redibujan las calles que estan saliendo ahora mismo
-    for (let i = hechos; i < trazos.length; i++) {
-      const tr = trazos[i];
+    const frente = (1 - Math.pow(1 - Math.min(1, t / 0.72), 2.4)) * 1180;
+    // menos detalle cuando la cámara está muy alta: las sendas no se leen
+    const saltaFinas = cam.radio > 680;
+    c.lineCap = 'round'; c.lineJoin = 'round';
+    for (const tr of TRAZOS) {
       if (tr.d > frente) break;
+      if (saltaFinas && tr.w === 1) continue;
       const f = Math.min(1, (frente - tr.d) / (tr.largo * 0.55 + 30));
       if (f <= 0) continue;
-      estiloTrazo(ctx, grosor(tr.w), alfa(tr.w, Math.min(1, f * 1.6)));
-      trazar(ctx, tr, f);
+      c.strokeStyle = 'rgba(' + VIA + ',' + ALFA[tr.w] * Math.min(1, f * 1.6) + ')';
+      c.lineWidth = grosor(tr.w);
+      trazar(c, tr, f);
     }
 
-    // 3) adornos de lamina, ya al final
-    const tarde = Math.max(0, (t - 0.55) / 0.45);
-    rosa(ctx, tarde);
-    escala(ctx, tarde);
+    caminos(c, (t - PAUSA - 0.02) / (1 - PAUSA - 0.02));
+  }
 
-    // 4) la chincheta, siempre encima
-    const pulso = quieto ? 0 : (ahora % 2600) / 2600;
-    chincheta(ctx, pulso);
+  let t0 = 0, raf = 0;
+  const DUR = 5200;
 
-    if (t >= 1 && hechos >= trazos.length) acabado = true;
+  function pinta(ahora) {
+    if (!t0) t0 = ahora;
+    const t = quieto ? 1 : Math.min(1, (ahora - t0) / DUR);
 
-    // tras acabar seguimos solo por el latido de la chincheta
-    raf = requestAnimationFrame(pintar);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    if (t >= 1 && !posado) {
+      // ya está todo quieto: se estampa una vez y a partir de aquí solo
+      // se repinta la chincheta, que es lo único que sigue latiendo
+      base = document.createElement('canvas');
+      base.width = lienzo.width; base.height = lienzo.height;
+      const b = base.getContext('2d');
+      b.setTransform(dpr, 0, 0, dpr, 0, 0);
+      escena(b, 1);
+      posado = true;
+    }
+
+    if (posado) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.drawImage(base, 0, 0);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    } else {
+      escena(ctx, t);
+    }
+
+    chincheta(ctx, quieto ? 0 : (ahora % 2600) / 2600);
+    raf = requestAnimationFrame(pinta);
   }
 
   function arrancar() {
     cancelAnimationFrame(raf);
     medir();
-    t0 = 0; acabado = false;
-    raf = requestAnimationFrame(pintar);
+    t0 = 0;
+    raf = requestAnimationFrame(pinta);
   }
 
-  // el trazado no empieza hasta que la cortina se ha ido
   window.addEventListener('plano:arranca', arrancar, { once: true });
 
   let remedir;
   addEventListener('resize', () => {
     clearTimeout(remedir);
     remedir = setTimeout(() => {
-      const antes = acabado;
+      const yaEstaba = posado;
       medir();
-      if (antes) { t0 = performance.now() - DUR; }   // si ya estaba, repintalo entero
+      if (yaEstaba) t0 = performance.now() - DUR;   // reencuadra sin repetir el viaje
     }, 180);
   });
 

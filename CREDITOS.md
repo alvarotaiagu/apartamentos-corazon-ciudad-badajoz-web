@@ -4,8 +4,20 @@
 (GitHub Pages sobre la rama `master`, con `noindex` en las tres páginas mientras no se venda).
 
 Web de los dos apartamentos turísticos de la calle Ramón Albarrán, 9 (06002 Badajoz).
-Concepto: **«Cartografía»** — la portada dibuja el callejero real del casco antiguo
-saliendo del portal, como si lo estuviera trazando un cartógrafo.
+Concepto: **«Cartografía»** — la portada es un plano nocturno del casco antiguo,
+real, con esta coreografía:
+
+1. La cámara **cae desde muy arriba** hasta el portal, mientras el callejero se
+   traza saliendo de la chincheta (que lleva dentro el tejado del logo).
+2. Aparecen en silueta las **manzanas** del barrio.
+3. Pausa breve a ras de calle.
+4. La cámara **se retira** y, al hacerlo, salen del portal los **recorridos a pie
+   reales** con sus minutos. Se retira justo lo necesario para que quepan: el
+   encuadre final se calcula para que entren la Alcazaba y la Puerta de Palmas.
+
+En móvil se descartan solos los caminos que no caben (la Puerta de Palmas se
+sale por la izquierda), y las chapas de los minutos nunca bajan del bloque de
+texto, que se mide en vivo.
 
 ## De dónde sale cada cosa
 
@@ -47,20 +59,28 @@ Todo verificado, nada inventado:
 
 - Dirección, teléfono, correo, superficies, camas y servicios: de su web oficial.
 - Coordenadas `38.8774593, -6.9696957`: Nominatim (OSM), edificio con portal nº 9.
-- Distancias a monumentos: **línea recta real** calculada desde el portal con los nodos
-  de OSM. Los minutos son esa distancia × 1,3 (rodeo del callejero) a 80 m/min.
+- Distancias a monumentos: **recorrido real a pie**, calculado con Dijkstra sobre el
+  grafo peatonal de OSM (14.941 nodos en 1,4 km a la redonda). **No** es la línea recta
+  multiplicada por un factor: es el camino que se anda de verdad, calle a calle.
+- Minutos = `ceil(metros / 80)` con **mínimo 2**, porque entre el portal, la escalera y
+  salir a la acera nadie llega a ningún sitio en sesenta segundos.
 
-| Sitio | Línea recta | Andando |
-|---|---|---|
-| Plaza de España | 101 m | 2 min |
-| Catedral de San Juan Bautista | 102 m | 2 min |
-| Ayuntamiento | 161 m | 3 min |
-| La Giralda | 329 m | 5 min |
-| Museo de Bellas Artes | 340 m | 5 min |
-| Plaza Alta | 437 m | 7 min |
-| Puerta de Palmas | 615 m | 10 min |
-| Alcazaba | 643 m | 10 min |
-| Puente de Palmas | 907 m | 14 min |
+| Sitio | Andando | Minutos | (línea recta) |
+|---|---|---|---|
+| Catedral de San Juan Bautista | 77 m | 2 min | 102 m |
+| Plaza de España | 139 m | 2 min | 101 m |
+| Ayuntamiento | 175 m | 3 min | 161 m |
+| La Giralda | 389 m | 5 min | 329 m |
+| Museo de Bellas Artes | 389 m | 5 min | 340 m |
+| Plaza Alta | 565 m | 8 min | 437 m |
+| Puerta de Palmas | 664 m | 9 min | 615 m |
+| Alcazaba | 769 m | 10 min | 643 m |
+| Puente de Palmas (otra orilla) | 1.564 m | 20 min | 907 m |
+
+Los cinco marcados como `hero` en `datos/rutas.json` son los que se dibujan en la
+portada. El Puente de Palmas no se cita con sus 20 minutos porque ese nodo de OSM está
+al otro lado del río: la web habla de la **Puerta** de Palmas (9 min), y el puente
+arranca justo detrás.
 
 ### Reseñas
 Las cinco son **literales** de su web, con el nombre de quien las firmó

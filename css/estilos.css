@@ -28,6 +28,12 @@
   --tinta-2:    #4B4472;   /* texto secundario */
   --tinta-3:    #7B7598;   /* apoyos, pies de foto */
 
+  /* --- la noche del hero --- */
+  --noche:      #140F3A;   /* fondo del plano nocturno */
+  --noche-txt:  #D6DAFF;   /* texto sobre la noche */
+  --noche-ac:   #9FA8F5;   /* cursiva del titular */
+  --noche-lin:  rgba(160,170,240,.25);
+
   /* --- medidas --- */
   --cab:        4.75rem;   /* alto de la cabecera */
   --radio:      2px;       /* casi recto: esto es un plano, no una app */
@@ -175,14 +181,25 @@ section{ position:relative; z-index:2; }
   display:flex; align-items:center; gap:.7rem;
   text-decoration:none; color:var(--indigo-os); margin-right:auto;
 }
+/* el emblema va en línea y con currentColor en las manos, para que pueda
+   volverse blanco sobre el plano de noche sin perder el bermellón */
+.marca svg{ width:2.4rem; height:2.4rem; flex:none; }
 .marca img{ width:2.4rem; height:2.4rem; object-fit:contain; flex:none; }
 .marca span{
   font-family:'Cormorant Garamond',serif; font-size:1.18rem;
-  line-height:1.05; letter-spacing:.01em;
+  line-height:1.05; letter-spacing:.01em; color:inherit;
 }
 .marca span i{ display:block; font-style:normal; font-size:.56rem;
   letter-spacing:.22em; text-transform:uppercase; color:var(--tinta-3);
   font-family:'Jost',sans-serif; margin-top:.18rem; }
+
+/* mientras la cabecera flota sobre el hero nocturno, va en claro */
+.cab:not(.sc) .marca{ color:#fff; }
+.cab:not(.sc) .marca span i{ color:rgba(255,255,255,.62); }
+.cab:not(.sc) .nav a{ color:rgba(255,255,255,.84); }
+.cab:not(.sc) .nav a:hover{ color:#fff; }
+.cab:not(.sc) .menu-btn{ color:#fff; border-color:rgba(255,255,255,.38); }
+.cab:not(.sc) .menu-btn:hover{ border-color:#fff; }
 
 .nav{ display:flex; align-items:center; gap:1.9rem; }
 .nav a{
@@ -247,18 +264,21 @@ body.menu .menu-movil{ transform:none; visibility:visible; }
 
 /* ============ cortina de entrada ============ */
 
+/* La cortina es de papel y destapa un plano de NOCHE: tiene que ser distinta
+   del fondo que descubre, y así además el salto claro→oscuro remata la
+   entrada en vez de diluirse. */
 .cortina{
   position:fixed; inset:0; z-index:100;
-  background:var(--indigo-os);          /* distinta del fondo que destapa */
+  background:var(--plano);
   display:grid; place-items:center;
-  color:#fff;
+  color:var(--indigo-os);
 }
 .cortina[hidden]{ display:none; }
 .cortina__marca{ display:grid; place-items:center; gap:1.15rem; }
 .cortina svg{ width:clamp(74px,13vw,110px); height:auto; overflow:visible; }
 .cortina__txt{
   font-size:.64rem; letter-spacing:.34em; text-transform:uppercase;
-  color:rgba(255,255,255,.62);
+  color:var(--tinta-3);
   opacity:0;
 }
 
@@ -270,6 +290,7 @@ body.menu .menu-movil{ transform:none; visibility:visible; }
   display:flex; flex-direction:column; justify-content:flex-end;
   padding:calc(var(--cab) + 2rem) 0 2.4rem;
   overflow:clip;                      /* clip, no hidden: no rompe sticky */
+  background:var(--noche);
 }
 .hero__lienzo{
   position:absolute; inset:0; z-index:0;
@@ -278,9 +299,11 @@ body.menu .menu-movil{ transform:none; visibility:visible; }
 /* velo para que el titular siempre tenga contraste sobre el plano */
 .hero::after{
   content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+  /* el velo se queda corto a propósito: solo tiene que proteger el titular.
+     Si sube más, apaga las chapas de los caminos que caen cerca del portal. */
   background:
-    linear-gradient(to top, var(--plano) 2%, color-mix(in srgb,var(--plano) 72%,transparent) 32%, transparent 62%),
-    radial-gradient(120% 75% at 50% 0%, transparent 40%, color-mix(in srgb,var(--plano) 55%,transparent) 100%);
+    linear-gradient(to top, var(--noche) 2%, color-mix(in srgb,var(--noche) 72%,transparent) 26%, transparent 50%),
+    radial-gradient(120% 70% at 50% 0%, transparent 42%, color-mix(in srgb,var(--noche) 62%,transparent) 100%);
 }
 .hero__env{ position:relative; z-index:2; width:var(--ancho); margin-inline:auto; }
 
@@ -289,17 +312,22 @@ body.menu .menu-movil{ transform:none; visibility:visible; }
   line-height:.96;
   letter-spacing:-.018em;
   margin-bottom:1.5rem;
+  color:#fff;
 }
-.hero h1 .l2{ display:block; padding-left:clamp(0rem,4.5vw,4.5rem); font-style:italic; color:var(--indigo); }
+.hero h1 .l2{ display:block; padding-left:clamp(0rem,4.5vw,4.5rem); font-style:italic; color:var(--noche-ac); }
+
+.hero .coord{ color:rgba(214,218,255,.72); }
 
 .hero__pie{
   display:flex; flex-wrap:wrap; align-items:flex-end;
   gap:1.6rem 2.6rem;
   padding-top:1.5rem;
-  border-top:1px solid var(--retic);
+  border-top:1px solid var(--noche-lin);
 }
-.hero__pie p{ max-width:26rem; color:var(--tinta-2); font-size:1.02rem; margin:0; }
+.hero__pie p{ max-width:26rem; color:var(--noche-txt); font-size:1.02rem; margin:0; }
 .hero__acc{ display:flex; flex-wrap:wrap; gap:.75rem; margin-left:auto; }
+.hero .btn--linea{ --fg:#fff; border-color:rgba(255,255,255,.42); }
+.hero .btn--linea:hover{ --bg:#fff; --fg:var(--noche); border-color:#fff; }
 
 /* coordenadas, como el pie de una lámina */
 .coord{
@@ -317,11 +345,12 @@ html.con-movimiento .pal>i{ transform:translateY(102%); }
 
 /* ============ banda de distancias ============ */
 
+/* mismo negro que el hero: la banda se lee como el pie del plano, no como
+   una franja oscura pegada a otra franja oscura casi igual */
 .banda{
-  background:var(--indigo-os); color:#fff;
+  background:var(--noche); color:#fff;
   padding:1.05rem 0;
   overflow:clip;
-  border-block:1px solid var(--indigo-os);
 }
 .banda__pista{ display:flex; width:max-content; will-change:transform; }
 .banda__grupo{ display:flex; align-items:center; flex:none; }
