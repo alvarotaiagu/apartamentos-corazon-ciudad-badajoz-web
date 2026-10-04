@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Bocetos de hero · El Corazón de la Ciudad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+<style>
+  body{ overflow-x:hidden; }
+  body::before{ display:none; }
+
+  .barra{
+    position:fixed; inset-inline:0; top:0; z-index:40;
+    display:flex; gap:.4rem; align-items:center;
+    padding:.6rem clamp(.8rem,3vw,1.5rem);
+    background:color-mix(in srgb,var(--plano) 88%,transparent);
+    -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    box-shadow:0 1px 0 var(--retic);
+    overflow-x:auto; scrollbar-width:none;
+  }
+  .barra::-webkit-scrollbar{ display:none; }
+  .barra b{
+    font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:500;
+    color:var(--indigo-os); margin-right:auto; white-space:nowrap; padding-right:1rem;
+  }
+  .barra a{
+    flex:none; text-decoration:none; white-space:nowrap;
+    font-size:.64rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--tinta-2); border:1px solid var(--retic-2);
+    padding:.5rem .8rem; border-radius:2px;
+  }
+  .barra a:hover,.barra a.act{ background:var(--indigo); color:#fff; border-color:var(--indigo); }
+
+  .panel{
+    position:relative; min-height:100svh; overflow:clip;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:5.5rem 0 2.2rem;
+    border-bottom:1px solid var(--retic);
+  }
+  .panel canvas{ position:absolute; inset:0; width:100%; height:100%; }
+  .panel__velo{
+    position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(to top, var(--velo,var(--plano)) 2%,
+      color-mix(in srgb,var(--velo,var(--plano)) 72%,transparent) 32%, transparent 62%);
+  }
+  .panel__env{ position:relative; z-index:3; width:var(--ancho); margin-inline:auto; }
+
+  .ficha{
+    position:absolute; z-index:4; top:4.6rem; left:50%; translate:-50% 0;
+    width:var(--ancho);
+    display:flex; align-items:flex-start; gap:.8rem;
+  }
+  .ficha__n{
+    font-family:'Cormorant Garamond',serif; font-size:1rem; color:#fff;
+    background:var(--bermellon); width:2rem; height:2rem; flex:none;
+    display:grid; place-items:center; border-radius:50%;
+  }
+  .ficha__t{ max-width:34rem; }
+  .ficha__t b{
+    display:block; font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--eti,var(--indigo-os)); margin-bottom:.3rem; font-weight:500;
+  }
+  .ficha__t span{ font-size:.86rem; color:var(--eti2,var(--tinta-2)); line-height:1.5; }
+
+  .panel h2{
+    font-size:clamp(2.6rem,1.1rem + 6.4vw,6.4rem); line-height:.96;
+    letter-spacing:-.018em; margin-bottom:1.2rem; color:var(--tit,var(--indigo-os));
+  }
+  .panel h2 .l2{ display:block; padding-left:clamp(0rem,4.5vw,4.5rem); font-style:italic; color:var(--tit2,var(--indigo)); }
+  .pie2{
+    display:flex; flex-wrap:wrap; align-items:flex-end; gap:1.2rem 2.4rem;
+    padding-top:1.3rem; border-top:1px solid var(--lin,var(--retic));
+  }
+  .pie2 p{ max-width:25rem; color:var(--txt,var(--tinta-2)); font-size:1rem; margin:0; }
+  .pie2 div{ display:flex; flex-wrap:wrap; gap:.7rem; margin-left:auto; }
+  .coord2{
+    display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; margin-bottom:1.1rem;
+    font-size:.66rem; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--txt,var(--tinta-3)); font-variant-numeric:tabular-nums;
+  }
+  .coord2 i{ font-style:normal; color:var(--bermellon); }
+
+  /* --- variante noche --- */
+  .panel--noche{
+    --velo:#140F3A; --tit:#fff; --tit2:#9FA8F5; --txt:rgba(214,218,255,.8);
+    --lin:rgba(160,170,240,.25); --eti:#fff; --eti2:rgba(214,218,255,.75);
+    background:#140F3A;
+  }
+  .panel--noche .btn--linea{ --fg:#fff; border-color:rgba(255,255,255,.4); }
+  .panel--noche .btn--linea:hover{ --bg:#fff; --fg:#140F3A; }
+
+  /* --- variante calada --- */
+  /* el texto va abajo del todo; las letras caladas se dibujan centradas en el
+     40% de la altura, así nunca se pisan */
+  .panel--calado{ justify-content:flex-end; padding:5.5rem 0 3rem; }
+  .panel--calado .panel__velo{ display:none; }
+  .panel--calado .panel__env{ text-align:center; }
+  .panel--calado .sub{
+    font-size:1.05rem; color:var(--tinta-2); max-width:30rem; margin:0 auto;
+  }
+  .panel--calado .acc{ display:flex; gap:.7rem; justify-content:center; margin-top:1.6rem; flex-wrap:wrap; }
+
+  .elegir{
+    position:absolute; z-index:5; right:clamp(.8rem,3vw,2rem); bottom:1.4rem;
+  }
+  @media (max-width:820px){
+    .ficha{ top:4.2rem; }
+    .panel h2 .l2{ padding-left:0; }
+    .pie2 div{ margin-left:0; width:100%; }
+    .elegir{ position:static; margin-top:1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="barra">
+  <b>Hero · 5 maneras</b>
+  <a href="#v0">0 · Actual</a>
+  <a href="#v1">1 · Noche</a>
+  <a href="#v2">2 · Manzanas</a>
+  <a href="#v3">3 · Caminos</a>
+  <a href="#v4">4 · Zoom</a>
+  <a href="#v5">5 · Calado</a>
+</nav>
+
+<!-- 0 · el de ahora, como referencia -->
+<section class="panel" id="v0" data-cfg='{"paleta":"claro"}'>
+  <canvas></canvas>
+  <div class="panel__velo"></div>
+  <div class="ficha">
+    <span class="ficha__n">0</span>
+    <div class="ficha__t"><b>Lo que hay ahora</b>
+      <span>El callejero se traza desde el portal con tinta índigo sobre papel. Correcto, pero contenido: la mancha es clara y el dibujo queda fino.</span></div>
+  </div>
+  <div class="panel__env">
+    <p class="coord2"><span><i>◆</i> Calle Ramón Albarrán, 9</span><span>38°52′39″N &nbsp; 6°58′11″O</span></p>
+    <h2>En el corazón<span class="l2">de la ciudad</span></h2>
+    <div class="pie2">
+      <p>Dos apartamentos de 85 m² en una calle tranquila del casco antiguo.</p>
+      <div><a class="btn btn--marca" href="#v1">Ver los apartamentos</a><a class="btn btn--linea" href="#v1">Qué hay alrededor</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- 1 · noche -->
+<section class="panel panel--noche" id="v1" data-cfg='{"paleta":"noche","manzanas":true}'>
+  <canvas></canvas>
+  <div class="panel__velo"></div>
+  <div class="ficha">
+    <span class="ficha__n">1</span>
+    <div class="ficha__t"><b>Noche · el plano iluminado</b>
+      <span>Se invierte todo: fondo índigo profundo y las calles en luz, como un plano retroiluminado. Con las manzanas en silueta. Es el que más impacta de entrada y el que mejor hace brillar al bermellón de la marca.</span></div>
+  </div>
+  <div class="panel__env">
+    <p class="coord2"><span><i>◆</i> Calle Ramón Albarrán, 9</span><span>38°52′39″N &nbsp; 6°58′11″O</span></p>
+    <h2>En el corazón<span class="l2">de la ciudad</span></h2>
+    <div class="pie2">
+      <p>Dos apartamentos de 85 m² en una calle tranquila del casco antiguo.</p>
+      <div><a class="btn btn--marca" href="#v2">Ver los apartamentos</a><a class="btn btn--linea" href="#v2">Qué hay alrededor</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · manzanas -->
+<section class="panel" id="v2" data-cfg='{"paleta":"claro","manzanas":true}'>
+  <canvas></canvas>
+  <div class="panel__velo"></div>
+  <div class="ficha">
+    <span class="ficha__n">2</span>
+    <div class="ficha__t"><b>Manzanas · el casco antiguo de verdad</b>
+      <span>Las 1.255 manzanas reales aparecen tras las calles. El barrio deja de ser un esqueleto de líneas y se convierte en un plano impreso, con su grano de ciudad vieja. Mismo tono claro de ahora, mucha más densidad.</span></div>
+  </div>
+  <div class="panel__env">
+    <p class="coord2"><span><i>◆</i> Calle Ramón Albarrán, 9</span><span>38°52′39″N &nbsp; 6°58′11″O</span></p>
+    <h2>En el corazón<span class="l2">de la ciudad</span></h2>
+    <div class="pie2">
+      <p>Dos apartamentos de 85 m² en una calle tranquila del casco antiguo.</p>
+      <div><a class="btn btn--marca" href="#v3">Ver los apartamentos</a><a class="btn btn--linea" href="#v3">Qué hay alrededor</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · caminos -->
+<section class="panel" id="v3" data-cfg='{"paleta":"claro","rutas":true,"dur":4800,"radio":1060,"cyRel":0.6}'>
+  <canvas></canvas>
+  <div class="panel__velo"></div>
+  <div class="ficha">
+    <span class="ficha__n">3</span>
+    <div class="ficha__t"><b>Caminos · el argumento, dibujado</b>
+      <span>Salen del portal los cinco recorridos <em>reales</em> (calculados sobre el callejero, no en línea recta) y cada uno aterriza con sus minutos: Catedral 1, Giralda 4, Plaza Alta 6, Alcazaba 8, Puerta de Palmas 9. El hero deja de ser decoración y pasa a vender la ubicación.</span></div>
+  </div>
+  <div class="panel__env">
+    <p class="coord2"><span><i>◆</i> Calle Ramón Albarrán, 9</span><span>Todo a menos de diez minutos</span></p>
+    <h2>En el corazón<span class="l2">de la ciudad</span></h2>
+    <div class="pie2">
+      <p>Dos apartamentos de 85 m² en una calle tranquila del casco antiguo.</p>
+      <div><a class="btn btn--marca" href="#v4">Ver los apartamentos</a><a class="btn btn--linea" href="#v4">Qué hay alrededor</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · zoom -->
+<section class="panel" id="v4" data-cfg='{"paleta":"claro","manzanas":true,"zoom":true,"dur":3200}'>
+  <canvas></canvas>
+  <div class="panel__velo"></div>
+  <div class="ficha">
+    <span class="ficha__n">4</span>
+    <div class="ficha__t"><b>Zoom · la cámara baja a la calle</b>
+      <span>Entra desde muy arriba, con todo el plano diminuto, y cae sobre el portal hasta dejarlo a tamaño de calle. El gesto dice «es justo aquí» antes de que leas nada. Recarga la página para verlo otra vez.</span></div>
+  </div>
+  <div class="panel__env">
+    <p class="coord2"><span><i>◆</i> Calle Ramón Albarrán, 9</span><span>38°52′39″N &nbsp; 6°58′11″O</span></p>
+    <h2>En el corazón<span class="l2">de la ciudad</span></h2>
+    <div class="pie2">
+      <p>Dos apartamentos de 85 m² en una calle tranquila del casco antiguo.</p>
+      <div><a class="btn btn--marca" href="#v5">Ver los apartamentos</a><a class="btn btn--linea" href="#v5">Qué hay alrededor</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · calado -->
+<section class="panel panel--calado" id="v5" data-cfg='{"paleta":"noche","manzanas":true,"calado":true}'>
+  <canvas></canvas>
+  <div class="ficha">
+    <span class="ficha__n">5</span>
+    <div class="ficha__t"><b>Calado · el plano dentro de las letras</b>
+      <span>El mapa solo se ve por dentro del rótulo: las letras son la ventana al barrio. Lo más gráfico de los cinco, casi de cartel. A cambio renuncia a enseñar el plano entero.</span></div>
+  </div>
+  <div class="panel__env">
+    <p class="sub">Dos apartamentos de 85 m² en el casco antiguo de Badajoz.<br>A dos minutos de la Catedral.</p>
+    <div class="acc"><a class="btn btn--marca" href="#v0">Ver los apartamentos</a><a class="btn btn--linea" href="#v0">Qué hay alrededor</a></div>
+  </div>
+</section>
+
+<script src="js/callejero.js"></script>
+<script src="js/manzanas.js"></script>
+<script src="js/boceto-hero.js"></script>
+<script>
+(function(){
+  var paneles = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var planos = paneles.map(function(p){
+    return new PlanoBoceto(p.querySelector('canvas'), JSON.parse(p.dataset.cfg));
+  });
+
+  // solo se anima el que se está mirando
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var i = paneles.indexOf(e.target);
+      if (i < 0) return;
+      if (e.isIntersecting) { planos[i].medir(); planos[i].t0 = 0; planos[i].arranca(); }
+      else planos[i].para();
+    });
+  }, { threshold: 0.25 });
+  paneles.forEach(function(p){ io.observe(p); });
+
+  var t;
+  addEventListener('resize', function(){
+    clearTimeout(t);
+    t = setTimeout(function(){ planos.forEach(function(pl){ if (pl.corriendo) pl.reinicia(); else pl.medir(); }); }, 200);
+  });
+
+  // marca en la barra el que se ve
+  var enlaces = Array.prototype.slice.call(document.querySelectorAll('.barra a'));
+  var io2 = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (!e.isIntersecting) return;
+      enlaces.forEach(function(a){ a.classList.toggle('act', a.getAttribute('href') === '#' + e.target.id); });
+    });
+  }, { threshold: 0.5 });
+  paneles.forEach(function(p){ io2.observe(p); });
+})();
+</script>
+</body>
+</html>

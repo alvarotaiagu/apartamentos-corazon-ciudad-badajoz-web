@@ -18,12 +18,18 @@
   const MARCA   = '216,36,26';     // bermellon
   const RADIO_M = 470;             // metros que caben en el radio visible
 
+  // El callejero llega hasta 1050 m, pero el hero solo encuadra ~470 m: se
+  // descarta lo que nunca va a entrar, que si no se dibuja fuera de pantalla.
+  const CORTE = RADIO_M * 1.7;
+
   // --- trazos: [peso, dmin, x0,y0, x1,y1, ...] -> objetos ---
-  const trazos = window.CALLEJERO.map((a) => {
-    const pts = [];
-    for (let i = 2; i < a.length; i += 2) pts.push(a[i], a[i + 1]);
-    return { w: a[0], d: a[1], p: pts, largo: 0 };
-  });
+  const trazos = window.CALLEJERO
+    .filter((a) => a[1] <= CORTE)
+    .map((a) => {
+      const pts = [];
+      for (let i = 2; i < a.length; i += 2) pts.push(a[i], a[i + 1]);
+      return { w: a[0], d: a[1], p: pts, largo: 0 };
+    });
 
   // longitud de cada trazo, para repartir bien el dibujado
   for (const t of trazos) {
