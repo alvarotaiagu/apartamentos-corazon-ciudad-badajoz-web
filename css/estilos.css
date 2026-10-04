@@ -200,16 +200,22 @@ section{ position:relative; z-index:2; }
 .cab .btn{ padding:.72rem 1.25rem; font-size:.7rem; }
 
 /* botón hamburguesa */
+/* flex con gap, NO grid: con place-items:center las tres rayas se reparten en
+   filas de ~15,7px y el translateY(6px) no llegaba a cruzarlas (salía una sola
+   diagonal en vez de la X). Con gap:5px y 1px de alto, los centros caen
+   exactamente en -6 / 0 / +6 y el giro cierra la X. */
 .menu-btn{
   display:none; width:2.75rem; height:2.75rem;
   background:none; border:1px solid var(--retic-2); border-radius:var(--radio);
-  cursor:pointer; padding:0; place-items:center; color:var(--indigo-os);
+  cursor:pointer; padding:0; color:var(--indigo-os);
+  flex-direction:column; align-items:center; justify-content:center; gap:5px;
+  transition:border-color .3s var(--ease), background .3s var(--ease);
 }
-.menu-btn span{
+.menu-btn:hover{ border-color:var(--indigo); }
+.menu-btn span:not(.oculto-visual){
   display:block; width:1.05rem; height:1px; background:currentColor;
   transition:transform .4s var(--ease), opacity .25s;
 }
-.menu-btn span+span{ margin-top:5px; }
 body.menu .menu-btn span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
 body.menu .menu-btn span:nth-child(2){ opacity:0; }
 body.menu .menu-btn span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
@@ -227,12 +233,17 @@ body.menu .menu-btn span:nth-child(3){ transform:translateY(-6px) rotate(-45deg)
   visibility:hidden;
 }
 body.menu .menu-movil{ transform:none; visibility:visible; }
-.menu-movil a{
+/* :not(.btn) es imprescindible: «.menu-movil a» gana en especificidad a «.btn»
+   y le robaba al botón la tipografía, el color blanco y el padding. */
+.menu-movil a:not(.btn){
   font-family:'Cormorant Garamond',serif; font-size:2.1rem;
   color:var(--indigo-os); text-decoration:none;
   padding:.45rem 0; border-bottom:1px solid var(--retic);
 }
-.menu-movil .btn{ margin-top:1.6rem; align-self:flex-start; }
+.menu-movil .btn{
+  margin-top:1.8rem; align-self:flex-start;
+  padding:1.05rem 2rem; font-size:.78rem;
+}
 
 /* ============ cortina de entrada ============ */
 
@@ -682,7 +693,7 @@ html.con-movimiento [data-sube]{ opacity:0; }
 @media (max-width:820px){
   :root{ --cab:4.25rem; --ancho:min(100% - 2rem,76rem); --ancho-txt:min(100% - 2rem,42rem); }
   .nav,.cab .btn{ display:none; }
-  .menu-btn{ display:grid; }
+  .menu-btn{ display:flex; }
   .hero h1 .l2{ padding-left:0; }
   .hero__acc{ margin-left:0; width:100%; }
   .apt__ficha{ margin-left:0; width:100%; }

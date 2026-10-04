@@ -270,6 +270,31 @@ const men = await pm.evaluate(() => {
 });
 if (men.vis === 'visible' && men.alto >= 800) ok('el menú móvil ocupa la pantalla (' + men.alto + 'px)');
 else mal('menú móvil raro: ' + JSON.stringify(men));
+
+// El botón del menú NO puede heredar la tipografía de «.menu-movil a»
+// (pasó: salía en Cormorant, oscuro y sin padding: «el botón es feísimo»).
+const btnMenu = await pm.evaluate(() => {
+  const b = document.querySelector('.menu-movil .btn');
+  const g = getComputedStyle(b);
+  return { fuente: g.fontFamily.split(',')[0].replace(/["']/g, ''), color: g.color,
+           fondo: g.backgroundColor, mayus: g.textTransform,
+           alto: Math.round(b.getBoundingClientRect().height) };
+});
+if (btnMenu.fuente === 'Jost' && btnMenu.color === 'rgb(255, 255, 255)' &&
+    btnMenu.mayus === 'uppercase' && btnMenu.alto >= 44)
+  ok('el botón del menú conserva su estilo (' + btnMenu.fuente + ', ' + btnMenu.alto + 'px)');
+else mal('el botón del menú hereda estilos ajenos: ' + JSON.stringify(btnMenu));
+
+// y las dos rayas de la hamburguesa tienen que cruzarse en el mismo punto
+const equis = await pm.evaluate(() => {
+  const btn = document.getElementById('menu-btn');
+  const s = Array.from(btn.querySelectorAll('span')).filter((e) => !e.className);
+  const c = s.map((e) => { const r = e.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; });
+  const ops = s.map((e) => getComputedStyle(e).opacity);
+  return { sep: Math.round(Math.hypot(c[0][0] - c[2][0], c[0][1] - c[2][1])), media: ops[1] };
+});
+if (equis.sep <= 2 && equis.media === '0') ok('la hamburguesa cierra la X (desvío ' + equis.sep + 'px)');
+else mal('la X no cierra: las diagonales quedan a ' + equis.sep + 'px, raya central opacidad ' + equis.media);
 await pm.click('#menu-btn');
 await pm.waitForTimeout(600);
 
