@@ -1,5 +1,8 @@
 # El Corazón de la Ciudad · Badajoz
 
+**Publicada:** https://alvarotaiagu.github.io/apartamentos-corazon-ciudad-badajoz-web/
+(GitHub Pages sobre la rama `master`, con `noindex` en las tres páginas mientras no se venda).
+
 Web de los dos apartamentos turísticos de la calle Ramón Albarrán, 9 (06002 Badajoz).
 Concepto: **«Cartografía»** — la portada dibuja el callejero real del casco antiguo
 saliendo del portal, como si lo estuviera trazando un cartógrafo.
@@ -77,14 +80,17 @@ porque con tan pocas reseñas un número hace más daño que bien.
 ## Cómo probarla
 
 ```
-node verificar.mjs          # 29 comprobaciones: escritorio, móvil, movimiento
-                            # reducido, sin JS y páginas legales
+node verificar.mjs          # 29 comprobaciones en local: escritorio, móvil,
+                            # movimiento reducido, sin JS y páginas legales
 node mirar.mjs 1440 900 esc # capturas sección a sección (escritorio)
 node mirar.mjs 390 844 mov  # ídem en móvil
+node en-vivo.mjs            # comprueba lo YA PUBLICADO en Pages: que el CSS y
+                            # las fotos carguen bajo el prefijo del repo
 ```
 
-Las capturas van a `pruebas/`. Ambos scripts levantan su propio servidor
-(puertos 8731 y 8732) y usan el Playwright instalado en `ayuntamiento-usagre-web`.
+Las capturas van a `pruebas/` (ignorado por git, igual que `fotos-origen/`).
+Los scripts levantan su propio servidor (puertos 8731 y 8732) y usan el
+Playwright instalado en `ayuntamiento-usagre-web`.
 
 ## Técnica
 
