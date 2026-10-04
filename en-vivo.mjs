@@ -35,15 +35,27 @@ else mal('el CSS NO carga: fondo ' + estilado.bg);
 
 await page.waitForFunction(() => document.getElementById('cortina').hasAttribute('hidden'), null, { timeout: 9000 })
   .then(() => ok('la cortina se retira')).catch(() => mal('la cortina no se retira'));
-await page.waitForTimeout(5200);
+await page.waitForTimeout(6800);   // la coreografía del plano dura 5,2 s
 
+// el plano es nocturno y rellena el fondo: hay que contar lo que se SALE del
+// color de fondo, no los pixeles opacos (saldrian todos)
 const tinta = await page.evaluate(() => {
   const c = document.getElementById('plano'); const g = c.getContext('2d');
   const d = g.getImageData(0, 0, c.width, c.height).data;
-  let n = 0; for (let i = 3; i < d.length; i += 4 * 37) if (d[i] > 12) n++;
-  return n;
+  let n = 0, rojos = 0, total = 0;
+  for (let i = 0; i < d.length; i += 4 * 37) {
+    total++;
+    if (Math.abs(d[i] - 20) + Math.abs(d[i + 1] - 15) + Math.abs(d[i + 2] - 58) > 24) n++;
+    if (d[i] > 180 && d[i + 1] < 140 && d[i + 2] < 120) rojos++;
+  }
+  return { n, rojos, total, chapas: (c.__chapas || []).length };
 });
-tinta > 400 ? ok('el plano dibuja el callejero (' + tinta + ' muestras)') : mal('el plano está vacío (' + tinta + ')');
+tinta.n > tinta.total * 0.05
+  ? ok(`el plano dibuja el callejero (${tinta.n}/${tinta.total} fuera del fondo)`)
+  : mal(`el plano está vacío (${tinta.n}/${tinta.total})`);
+tinta.rojos > 20 && tinta.chapas >= 4
+  ? ok(`los caminos salen con sus minutos (${tinta.chapas} chapas)`)
+  : mal(`caminos mal: ${tinta.rojos} muestras rojas, ${tinta.chapas} chapas`);
 
 const h1 = await page.evaluate(() => {
   const e = document.querySelector('.hero h1');
