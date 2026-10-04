@@ -29,8 +29,16 @@
   const FONDO   = '#140F3A';
   const ALFA    = { 4: .9, 3: .85, 2: .6, 1: .34 };
 
-  const CERCA = 400;          // metros de encuadre al posarse en el portal
-  const DESC = 0.40, PAUSA = 0.50;   // tramos de la coreografía
+  /* Dos maneras de contarlo, se elige con ?hero=a o ?hero=b:
+       a · un solo deszoom suave mientras salen los caminos  (por defecto)
+       b · la cámara se retira a tirones, uno por cada camino que llega
+     Las dos arrancan YA ampliadas, a ras de calle: así desde el primer
+     fotograma hay mapa y el callejero se traza encima. */
+  const VERSION = (new URLSearchParams(location.search).get('hero') || 'a').toLowerCase() === 'b' ? 'b' : 'a';
+
+  const CERCA = 340;                 // metros de encuadre a ras de calle
+  const PAUSA = 0.46;                // hasta aquí solo se dibuja el callejero
+  const RITMO = 0.13, LARGO = 0.42;  // cadencia de los caminos (en el tramo final)
 
   const TRAZOS = window.CALLEJERO.map((a) => {
     const p = [];
@@ -46,7 +54,9 @@
     return { d: a[0], p };
   });
 
-  const TODAS = (window.RUTAS || []).filter((r) => r.hero);
+  // de más cerca a más lejos: así cada camino que llega pide un poco más de
+  // campo que el anterior, y el deszoom acompaña en vez de ir a saltos raros
+  const TODAS = (window.RUTAS || []).filter((r) => r.hero).sort((a, b) => a.m - b.m);
 
   let W = 0, H = 0, dpr = 1, gf = 1, util = 1000, lejos = 1080, cyFin = 0.62;
   let rutas = TODAS, base = null, posado = false, suelo = 400;
@@ -89,15 +99,28 @@
     base = null; posado = false;
   }
 
+  // escalera suave: un tirón de cámara por cada camino que llega (versión b)
+  function escalon(u, n) {
+    let k = 0;
+    for (let i = 0; i < n; i++) {
+      const ini = i === 0 ? 0 : RITMO * (i - 1) + LARGO;
+      const fin = RITMO * i + LARGO;
+      if (u <= ini) break;
+      const d = Math.min(1, (u - ini) / Math.max(0.01, fin - ini));
+      k = (i + (1 - Math.pow(1 - d, 2.4))) / n;
+      if (d < 1) break;
+    }
+    return Math.min(1, k);
+  }
+
   // --- cámara: dónde está y cuánto abarca en cada momento ---
   function camara(t) {
-    const suave = (k) => 1 - Math.pow(1 - k, 3);
-    if (t < DESC) {
-      const k = suave(t / DESC);
-      return { radio: CERCA / (0.12 + 0.88 * k), cy: 0.42 };
-    }
+    // mientras se traza el callejero la cámara no se mueve: a ras de calle
     if (t < PAUSA) return { radio: CERCA, cy: 0.42 };
-    const k = suave((t - PAUSA) / (1 - PAUSA));
+    const u = Math.min(1, (t - PAUSA) / (1 - PAUSA));
+    const k = VERSION === 'b'
+      ? escalon(u, Math.max(1, rutas.length))
+      : 1 - Math.pow(1 - u, 3);
     return { radio: CERCA + (lejos - CERCA) * k, cy: 0.42 + (cyFin - 0.42) * k };
   }
 
@@ -147,7 +170,7 @@
     if (t <= 0 || !rutas.length) return;
     const chapas = [];
     rutas.forEach((r, i) => {
-      const f = Math.max(0, Math.min(1, (t - i * 0.1) / 0.46));
+      const f = Math.max(0, Math.min(1, (t - i * RITMO) / LARGO));
       if (f <= 0) return;
       let L = 0;
       for (let k = 1; k < r.p.length; k++) L += Math.hypot(r.p[k][0] - r.p[k - 1][0], r.p[k][1] - r.p[k - 1][1]);
@@ -230,27 +253,36 @@
     const cam = camara(t);
     esc = (util * 0.62) / cam.radio;
     cx = W / 2; cy = H * cam.cy;
+    lienzo.__radio = Math.round(cam.radio);   // para poder medir la cámara desde los tests
 
     c.fillStyle = FONDO;
     c.fillRect(0, 0, W, H);
 
-    manzanas(c, (t - 0.22) / 0.26);
+    manzanas(c, (t - 0.08) / 0.24);
 
-    const frente = (1 - Math.pow(1 - Math.min(1, t / 0.72), 2.4)) * 1180;
-    // menos detalle cuando la cámara está muy alta: las sendas no se leen
-    const saltaFinas = cam.radio > 680;
+    // El trazado va por delante de la cámara: cuando esta empieza a retirarse
+    // (t = PAUSA) el callejero ya está hecho hasta mucho más lejos de lo que
+    // se ve, así que al abrirse el plano no aparecen calles de la nada.
+    const frente = 55 + (1 - Math.pow(1 - Math.min(1, t / 0.6), 2.6)) * 1200;
+
+    // Las sendas finas no se leen con la cámara alta, pero un corte seco
+    // (radio > 680) las metía TODAS de golpe al cruzar el umbral. Ahora entran
+    // con un desvanecido.
+    const detalle = Math.max(0, Math.min(1, (900 - cam.radio) / 320));
+
     c.lineCap = 'round'; c.lineJoin = 'round';
     for (const tr of TRAZOS) {
       if (tr.d > frente) break;
-      if (saltaFinas && tr.w === 1) continue;
+      if (tr.w === 1 && detalle <= 0.02) continue;
       const f = Math.min(1, (frente - tr.d) / (tr.largo * 0.55 + 30));
       if (f <= 0) continue;
-      c.strokeStyle = 'rgba(' + VIA + ',' + ALFA[tr.w] * Math.min(1, f * 1.6) + ')';
+      const fino = tr.w === 1 ? detalle : 1;
+      c.strokeStyle = 'rgba(' + VIA + ',' + ALFA[tr.w] * Math.min(1, f * 1.6) * fino + ')';
       c.lineWidth = grosor(tr.w);
       trazar(c, tr, f);
     }
 
-    caminos(c, (t - PAUSA - 0.02) / (1 - PAUSA - 0.02));
+    caminos(c, (t - PAUSA) / (1 - PAUSA));
   }
 
   let t0 = 0, raf = 0;

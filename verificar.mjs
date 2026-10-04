@@ -42,6 +42,32 @@ page.on('console', (m) => { if (m.type() === 'error') consola.push(m.text()); })
 page.on('response', (r) => { if (r.status() >= 400) red404.push(r.status() + ' ' + r.url().replace(BASE, '')); });
 page.on('pageerror', (e) => consola.push('pageerror: ' + e.message));
 
+// Apunta cuánto mapa hay dibujado JUSTO cuando la cortina se quita. Si el
+// plano no arranca hasta después, el hero aparece vacío medio segundo y
+// parece que la página se ha colgado (pasó, y el usuario lo cazó).
+await page.addInitScript(() => {
+  window.__alDestapar = null;
+  const mira = () => {
+    const cor = document.getElementById('cortina');
+    const c = document.getElementById('plano');
+    if (!cor || !c) return requestAnimationFrame(mira);
+    if (cor.hasAttribute('hidden') && window.__alDestapar === null) {
+      let n = 0, tot = 0;
+      try {
+        const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+        for (let i = 0; i < d.length; i += 4 * 151) {
+          tot++;
+          if (Math.abs(d[i] - 20) + Math.abs(d[i + 1] - 15) + Math.abs(d[i + 2] - 58) > 24) n++;
+        }
+      } catch (e) {}
+      window.__alDestapar = tot ? Math.round(n * 100 / tot) : -1;
+      return;
+    }
+    requestAnimationFrame(mira);
+  };
+  requestAnimationFrame(mira);
+});
+
 console.log('\n== escritorio 1440x900 ==');
 await page.goto(BASE, { waitUntil: 'load' });
 
@@ -56,6 +82,12 @@ if (/noindex/.test(robots || '')) ok('noindex puesto'); else mal('falta noindex'
 await page.waitForFunction(() => document.getElementById('cortina').hasAttribute('hidden'), null, { timeout: 8000 })
   .then(() => ok('la cortina se retira sola'))
   .catch(() => mal('la cortina NO se retira'));
+
+// el observador escribe en su propio rAF: hay que esperarlo, no leer a ciegas
+await page.waitForFunction(() => window.__alDestapar !== null, null, { timeout: 4000 }).catch(() => {});
+const alDestapar = await page.evaluate(() => window.__alDestapar);
+if (alDestapar > 10) ok(`al destaparse ya hay mapa dibujado (${alDestapar}% del lienzo)`);
+else mal(`el hero aparece vacío al quitarse la cortina (solo ${alDestapar}% dibujado)`);
 
 // el body vuelve a poder scrollear
 const ov = await page.evaluate(() => getComputedStyle(document.body).overflow);

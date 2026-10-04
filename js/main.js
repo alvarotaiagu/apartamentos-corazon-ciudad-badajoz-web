@@ -87,7 +87,10 @@
     if (hayGSAP) ScrollTrigger.refresh();
   }
 
+  let heroEntrado = false;
   function entradaHero() {
+    if (heroEntrado) return;
+    heroEntrado = true;
     const pals = $$('.hero h1 .pal > i');
     if (!hayGSAP || quieto) {
       pals.forEach((p) => (p.style.transform = 'none'));
@@ -122,9 +125,16 @@
         .to(['#c-mano-i', '#c-mano-d'], { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out', autoRound: false }, '-=0.18')
         .to('#c-corazon', { strokeDashoffset: 0, duration: 0.52, ease: 'power2.out', autoRound: false }, '-=0.22')
         .to('#cortina-txt', { opacity: 1, duration: 0.45, ease: 'power2.out' }, '-=0.3')
+        // El plano arranca DETRÁS de la cortina, casi un segundo antes de que
+        // se levante. Si no, al destaparse hay medio segundo de hero vacío y
+        // parece que se ha quedado pillado.
+        .call(lanzarPlano)
         .to('#c-corazon', { scale: 1.14, transformOrigin: '50px 62px', duration: 0.22, ease: 'power2.out' }, '+=0.1')
         .to('#c-corazon', { scale: 1, transformOrigin: '50px 62px', duration: 0.3, ease: 'power2.inOut' })
-        .to(cortina, { yPercent: -100, duration: 0.95, ease: 'expo.inOut' }, '+=0.15');
+        .to(cortina, { yPercent: -100, duration: 0.95, ease: 'expo.inOut' }, '+=0.15')
+        // y el titular empieza a subir mientras la cortina aún se va, para que
+        // no aparezca de golpe cuando ya está todo destapado
+        .add(entradaHero, '-=0.62');
     } else {
       clearTimeout(red);
       setTimeout(retirarCortina, quieto ? 60 : 500);
