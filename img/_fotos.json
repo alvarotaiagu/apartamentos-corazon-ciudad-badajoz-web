@@ -1,0 +1,176 @@
+{
+  "luna-salon": {
+    "alt": "Salon comedor de En el corazon de la luna, con sofa verde, mesa blanca y balcon",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "luna-salon-2": {
+    "alt": "Otra vista del salon comedor con los cuadros enmarcados y la lampara industrial",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "luna-dorm-1": {
+    "alt": "Dormitorio con cama de matrimonio, cabecero de madera y armario empotrado",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "luna-dorm-2": {
+    "alt": "Dormitorio con cama de matrimonio y salida al balcon",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "luna-dorm-3": {
+    "alt": "Dormitorio con dos camas individuales y cabeceros de palet",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "luna-dorm-4": {
+    "alt": "Dormitorio individual con ventilador de techo",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "luna-dorm-5": {
+    "alt": "Dormitorio luminoso con colcha beige y ventilador de techo",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "luna-cocina": {
+    "alt": "Cocina equipada con vitroceramica, microondas, lavadora y azulejo hidraulico",
+    "w": 2048,
+    "h": 2048,
+    "ar": 1.0
+  },
+  "luna-bano": {
+    "alt": "Bano con ducha, mampara de cristal y suelo hidraulico",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "luna-pasillo": {
+    "alt": "Pasillo del apartamento con cuadros y suelo de madera",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "portal": {
+    "alt": "Portal del edificio en la calle Ramon Albarran con la placa de apartamento turistico",
+    "w": 2048,
+    "h": 2731,
+    "ar": 0.7499
+  },
+  "ciudad-salon": {
+    "alt": "Salon de En el corazon de la ciudad con sofa chaise longue y mesa de centro de madera maciza",
+    "w": 2048,
+    "h": 1374,
+    "ar": 1.4905
+  },
+  "ciudad-salon-2": {
+    "alt": "Zona de estar del salon con la comoda antigua de madera",
+    "w": 2048,
+    "h": 1404,
+    "ar": 1.4587
+  },
+  "ciudad-dorm-1": {
+    "alt": "Dormitorio con cama de matrimonio y cabecero de madera antiguo",
+    "w": 2048,
+    "h": 1366,
+    "ar": 1.4993
+  },
+  "ciudad-dorm-2": {
+    "alt": "Dormitorio con cabecero de forja y armario empotrado",
+    "w": 2048,
+    "h": 1409,
+    "ar": 1.4535
+  },
+  "ciudad-dorm-3": {
+    "alt": "Dormitorio con mesita de noche y cortinas blancas",
+    "w": 2048,
+    "h": 1366,
+    "ar": 1.4993
+  },
+  "ciudad-dorm-4": {
+    "alt": "Dormitorio con cama de forja junto a la ventana",
+    "w": 2048,
+    "h": 1514,
+    "ar": 1.3527
+  },
+  "ciudad-cocina": {
+    "alt": "Cocina con horno, microondas, lavadora y suelo de damero",
+    "w": 2048,
+    "h": 1366,
+    "ar": 1.4993
+  },
+  "ciudad-bano": {
+    "alt": "Bano con lavabo de madera y ducha",
+    "w": 2048,
+    "h": 1416,
+    "ar": 1.4463
+  },
+  "ciudad-ducha": {
+    "alt": "Ducha con columna de hidromasaje",
+    "w": 2048,
+    "h": 2872,
+    "ar": 0.7131
+  },
+  "ciudad-pasillo": {
+    "alt": "Pasillo con perchero de forja y cuadros",
+    "w": 2048,
+    "h": 1385,
+    "ar": 1.4787
+  },
+  "vista-balcon": {
+    "alt": "Vista desde el balcon a la calle Ramon Albarran, con sus balcones de forja",
+    "w": 2048,
+    "h": 1477,
+    "ar": 1.3866
+  },
+  "fachada": {
+    "alt": "Fachada del edificio de los apartamentos vista desde la calle",
+    "w": 2048,
+    "h": 2798,
+    "ar": 0.732
+  },
+  "plaza-alta-2": {
+    "alt": "Arqueria de piedra de la Plaza Alta de Badajoz",
+    "w": 2048,
+    "h": 1350,
+    "ar": 1.517
+  },
+  "puente-palmas": {
+    "alt": "El puente de Palmas sobre el Guadiana al atardecer",
+    "w": 2048,
+    "h": 1379,
+    "ar": 1.4851
+  },
+  "giralda": {
+    "alt": "La Giralda de Badajoz, edificio modernista de ladrillo rojo",
+    "w": 2048,
+    "h": 1347,
+    "ar": 1.5204
+  },
+  "calle-catedral": {
+    "alt": "Calle del casco antiguo de Badajoz con la torre de la Catedral al fondo",
+    "w": 2048,
+    "h": 1365,
+    "ar": 1.5004
+  },
+  "claustro": {
+    "alt": "Galeria de arcos blancos en el casco antiguo de Badajoz",
+    "w": 2048,
+    "h": 1365,
+    "ar": 1.5004
+  },
+  "plaza-alta": {
+    "alt": "La Plaza Alta de Badajoz con sus fachadas rojas y el esgrafiado blanco",
+    "w": 2048,
+    "h": 1102,
+    "ar": 1.8584
+  }
+}

@@ -1,0 +1,39 @@
+/* Páginas de texto legal: la misma tinta, sin plano ni movimiento. */
+
+body.legal{ background:var(--plano); }
+body.legal .cab{ position:sticky; }
+
+.hoja{
+  padding:calc(var(--cab) + clamp(3rem,7vw,6rem)) 0 clamp(4rem,8vw,7rem);
+}
+.hoja .titular{ margin-bottom:2.6rem; }
+
+.hoja h2{
+  font-size:clamp(1.35rem,1.1rem + 1vw,1.85rem);
+  margin:2.8rem 0 .9rem;
+  padding-top:1.5rem;
+  border-top:1px solid var(--retic);
+}
+.hoja h2:first-of-type{ border-top:0; padding-top:0; }
+
+.hoja p{ color:var(--tinta-2); }
+.hoja strong{ color:var(--indigo-os); font-weight:400; }
+
+.lista{ list-style:none; margin:1.2rem 0; padding:0; display:grid; gap:.55rem; }
+.lista b{
+  font-weight:400; color:var(--tinta-3);
+  font-size:.66rem; letter-spacing:.16em; text-transform:uppercase;
+  margin-right:.5rem;
+}
+
+.pendiente{
+  border-left:2px solid var(--bermellon);
+  background:var(--hoja);
+  padding:1rem 1.2rem;
+  font-size:.9rem;
+  color:var(--tinta-2);
+}
+
+.volver{ margin-top:3rem; padding-top:1.6rem; border-top:1px solid var(--retic); }
+.volver a{ text-decoration:none; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; }
+.volver a:hover{ color:var(--bermellon); }

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 92" role="img" aria-label="El Corazón de la Ciudad">
+  <title>El Corazón de la Ciudad</title>
+  <!-- Emblema redibujado del logo del negocio: tejado sobre dos manos que
+       sostienen un corazón. Índigo #302490 y bermellón #D8241A, los colores
+       medidos sobre el logo original. -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 43 L50 11 L91 43" stroke="#D8241A" stroke-width="7.5"/>
+    <path d="M28 85 L28 59 Q28 49.5 37.5 49.5 L45 49.5" stroke="#302490" stroke-width="7.5"/>
+    <path d="M72 85 L72 59 Q72 49.5 62.5 49.5 L55 49.5" stroke="#302490" stroke-width="7.5"/>
+  </g>
+  <path d="M50 77 C35.5 66.5 32.5 56 39.8 51.2 C44.8 47.9 50 51.4 50 56.2 C50 51.4 55.2 47.9 60.2 51.2 C67.5 56 64.5 66.5 50 77 Z"
+        fill="#D8241A"/>
+</svg>

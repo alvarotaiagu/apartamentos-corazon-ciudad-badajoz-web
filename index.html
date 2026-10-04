@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>El Corazón de la Ciudad · Apartamentos en el casco antiguo de Badajoz</title>
+<meta name="description" content="Dos apartamentos turísticos de 85 m² en la calle Ramón Albarrán, a dos minutos de la Catedral y la Plaza de España de Badajoz.">
+<meta name="theme-color" content="#EFEEF4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+<link rel="icon" href="img/marca.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/logo.png">
+<noscript><style>.cortina{display:none!important}</style></noscript>
+</head>
+<body>
+
+<!-- ============ cortina ============ -->
+<div class="cortina" id="cortina" role="presentation">
+  <div class="cortina__marca">
+    <svg viewBox="0 0 100 92" fill="none" aria-hidden="true">
+      <!-- tejado -->
+      <path id="c-tejado" d="M8 40 L50 7 L92 40" stroke="#D8241A" stroke-width="5"
+            stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <!-- manos -->
+      <path id="c-mano-i" d="M30 86 L30 56 Q30 46 39 46 L46 46" stroke="#fff" stroke-width="5"
+            stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <path id="c-mano-d" d="M70 86 L70 56 Q70 46 61 46 L54 46" stroke="#fff" stroke-width="5"
+            stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+      <!-- corazón -->
+      <path id="c-corazon" d="M50 73 C38 64 36 55 42 51 C46 48 50 51 50 55 C50 51 54 48 58 51 C64 55 62 64 50 73 Z"
+            stroke="#D8241A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+    </svg>
+    <p class="cortina__txt" id="cortina-txt">Badajoz · Casco antiguo</p>
+  </div>
+</div>
+
+<!-- ============ cabecera ============ -->
+<header class="cab" id="cab">
+  <div class="cab__env">
+    <a class="marca" href="#" aria-label="El Corazón de la Ciudad, inicio">
+      <img src="img/marca.svg" alt="" width="100" height="92">
+      <span>El Corazón de la Ciudad<i>Apartamentos · Badajoz</i></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#portal">La casa</a>
+      <a href="#apartamentos">Apartamentos</a>
+      <a href="#a-pie">Qué hay cerca</a>
+      <a href="#donde">Dónde</a>
+    </nav>
+    <a class="btn btn--marca" href="#reservar">Reservar</a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu-movil">
+      <span></span><span></span><span></span>
+      <span class="oculto-visual">Abrir el menú</span>
+    </button>
+  </div>
+</header>
+
+<div class="menu-movil" id="menu-movil" aria-hidden="true">
+  <a href="#portal">La casa</a>
+  <a href="#apartamentos">Apartamentos</a>
+  <a href="#a-pie">Qué hay cerca</a>
+  <a href="#donde">Dónde</a>
+  <a class="btn btn--marca" href="#reservar">Reservar</a>
+</div>
+
+<main id="principal">
+
+<!-- ============ hero: el plano ============ -->
+<section class="hero">
+  <canvas class="hero__lienzo" id="plano" aria-hidden="true"></canvas>
+  <div class="hero__env">
+    <p class="coord">
+      <span><i>◆</i> Calle Ramón Albarrán, 9</span>
+      <span>38°52′39″N &nbsp; 6°58′11″O</span>
+      <span>Casco antiguo · Badajoz</span>
+    </p>
+    <h1 data-partir>
+      En el corazón
+      <span class="l2">de la ciudad</span>
+    </h1>
+    <div class="hero__pie">
+      <p>Dos apartamentos de 85 m² en una calle tranquila del casco antiguo. Abres el portal y ya estás dentro de Badajoz: la Catedral a dos minutos, la Plaza Alta a siete.</p>
+      <div class="hero__acc">
+        <a class="btn btn--marca" href="#apartamentos" data-iman>Ver los apartamentos</a>
+        <a class="btn btn--linea" href="#a-pie" data-iman>Qué hay alrededor</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ banda de distancias ============ -->
+<div class="banda" aria-label="Distancias andando desde el portal">
+  <div class="banda__pista" id="banda-pista">
+    <div class="banda__grupo" data-banda>
+      <span class="banda__it"><b>2 min</b> Catedral de San Juan <i>102 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>2 min</b> Plaza de España <i>101 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>3 min</b> Ayuntamiento <i>161 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>5 min</b> La Giralda <i>329 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>5 min</b> Museo de Bellas Artes <i>340 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>7 min</b> Plaza Alta <i>437 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>10 min</b> Alcazaba <i>643 m</i></span><span class="banda__sep">◆</span>
+      <span class="banda__it"><b>14 min</b> Puente de Palmas <i>907 m</i></span><span class="banda__sep">◆</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ el portal ============ -->
+<section class="portal" id="portal">
+  <div class="env">
+    <div class="portal__rejilla">
+      <div data-sube>
+        <p class="rotulo"><b>01</b> El portal</p>
+        <h2 class="titular">Una calle corta,<br><em>y detrás, todo</em></h2>
+        <p class="entradilla" style="margin-top:1.6rem">
+          La calle Ramón Albarrán es de esas que no aparecen en las guías y que, sin embargo,
+          lo tienen todo a un paso. Poco tráfico, portal con ascensor y la sensación —rara en
+          el centro de cualquier ciudad— de dormir en silencio.
+        </p>
+        <p class="entradilla" style="margin-top:1rem">
+          Arriba hay dos apartamentos completos, los dos de 85 metros, los dos para seis
+          personas. No son habitaciones: son casas enteras, con su cocina, su lavadora y su
+          salón. Víctor, el propietario, entrega las llaves en mano y está localizable
+          durante toda la estancia.
+        </p>
+        <div class="datos">
+          <div><b>2</b><span>Apartamentos</span></div>
+          <div><b>85 m²</b><span>Cada uno</span></div>
+          <div><b>6</b><span>Plazas por casa</span></div>
+          <div><b>102 m</b><span>A la Catedral</span></div>
+        </div>
+      </div>
+      <figure class="portal__foto" data-sube style="margin:0">
+        <img src="img/portal-800.jpg" alt="Portal del edificio en la calle Ramón Albarrán, con la placa de apartamento turístico" loading="lazy" width="800" height="1067">
+        <figcaption class="portal__sello">
+          <b>Nº 9</b><span>Ramón Albarrán</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ los dos apartamentos ============ -->
+<section class="apts" id="apartamentos">
+  <div class="env">
+    <div class="apts__cab" data-sube>
+      <p class="rotulo"><b>02</b> Las dos casas</p>
+      <h2 class="titular">Mismo portal,<br><em>dos maneras de quedarse</em></h2>
+    </div>
+
+    <!-- ---- La luna ---- -->
+    <article class="apt" data-apt="luna">
+      <div class="apt__cab" data-sube>
+        <span class="apt__num">I</span>
+        <h3>En el corazón de <em>la luna</em></h3>
+        <p class="apt__ficha">
+          <span>85 m²</span><span>3 dormitorios</span><span>4 camas</span><span>6 personas</span>
+        </p>
+      </div>
+      <div class="apt__cuerpo">
+        <div class="gal" data-galeria="luna" data-sube>
+          <button class="gal__btn" type="button" data-i="0"><img src="img/luna-salon-800.jpg" alt="Salón comedor de En el corazón de la luna, con sofá verde, mesa blanca y balcón" loading="lazy" width="800" height="1067"></button>
+          <button class="gal__btn" type="button" data-i="1"><img src="img/luna-dorm-1-800.jpg" alt="Dormitorio con cama de matrimonio, cabecero de madera y armario empotrado" loading="lazy" width="800" height="1067"></button>
+          <button class="gal__btn" type="button" data-i="2"><img src="img/luna-dorm-3-800.jpg" alt="Dormitorio con dos camas individuales y cabeceros de palé" loading="lazy" width="800" height="1067"></button>
+          <button class="gal__btn" type="button" data-i="3"><img src="img/luna-cocina-800.jpg" alt="Cocina equipada con vitrocerámica, microondas, lavadora y azulejo hidráulico" loading="lazy" width="800" height="800"></button>
+          <button class="gal__btn" type="button" data-i="4"><img src="img/luna-bano-800.jpg" alt="Baño con ducha, mampara de cristal y suelo hidráulico" loading="lazy" width="800" height="1067"><span class="gal__mas">+6</span></button>
+        </div>
+        <div class="apt__txt" data-sube>
+          <p>El más grande de los dos en número de habitaciones: tres dormitorios, cuatro camas y
+             un salón con balcón a la calle. Reformado entero, con suelo de madera, azulejo
+             hidráulico en cocina y baño, y ventilador en cada cuarto además del aire.</p>
+          <p>Dos camas de matrimonio y dos individuales. Es el que suele funcionar mejor para
+             familias o para dos parejas que viajan juntas.</p>
+          <h4>Lo que hay dentro</h4>
+          <ul class="servicios">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9h18M3 9v10h18V9M3 9l2-4h14l2 4"/></svg>Cocina con fogones</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Microondas y nevera</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8"/></svg>TV con streaming</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 7h18M3 12h12M3 17h8"/></svg>Aire acondicionado</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg>Lavadora</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 20V8l8-5 8 5v12"/><path d="M9 20v-6h6v6"/></svg>Entrada privada</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 18h12a3 3 0 0 0 0-6H4v6Z"/><path d="M18 12h2a2 2 0 0 1 0 4h-2"/></svg>Cafetera y tetera</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 20h18M6 20V9l6-5 6 5v11"/></svg>Vista a monumento</li>
+          </ul>
+          <div class="apt__acc">
+            <a class="btn btn--marca" href="#reservar" data-iman>Consultar fechas</a>
+            <button class="btn btn--linea" type="button" data-abrir="luna" data-iman>Ver las 11 fotos</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ---- La ciudad ---- -->
+    <article class="apt" data-apt="ciudad">
+      <div class="apt__cab" data-sube>
+        <span class="apt__num">II</span>
+        <h3>En el corazón de <em>la ciudad</em></h3>
+        <p class="apt__ficha">
+          <span>85 m²</span><span>2 dormitorios</span><span>3 camas</span><span>6 personas</span>
+        </p>
+      </div>
+      <div class="apt__cuerpo">
+        <div class="gal" data-galeria="ciudad" data-sube>
+          <button class="gal__btn" type="button" data-i="0"><img src="img/ciudad-salon-800.jpg" alt="Salón de En el corazón de la ciudad con sofá chaise longue y mesa de centro de madera maciza" loading="lazy" width="800" height="537"></button>
+          <button class="gal__btn" type="button" data-i="1"><img src="img/ciudad-dorm-1-800.jpg" alt="Dormitorio con cama de matrimonio y cabecero de madera antiguo" loading="lazy" width="800" height="534"></button>
+          <button class="gal__btn" type="button" data-i="2"><img src="img/ciudad-dorm-2-800.jpg" alt="Dormitorio con cabecero de forja y armario empotrado" loading="lazy" width="800" height="550"></button>
+          <button class="gal__btn" type="button" data-i="3"><img src="img/ciudad-cocina-800.jpg" alt="Cocina con horno, microondas, lavadora y suelo de damero" loading="lazy" width="800" height="534"></button>
+          <button class="gal__btn" type="button" data-i="4"><img src="img/vista-balcon-800.jpg" alt="Vista desde el balcón a la calle Ramón Albarrán, con sus balcones de forja" loading="lazy" width="800" height="577"><span class="gal__mas">+7</span></button>
+        </div>
+        <div class="apt__txt" data-sube>
+          <p>El de carácter más clásico: dos dormitorios con cabeceros antiguos —uno de madera,
+             otro de forja—, un salón largo con zona de estar aparte y una cómoda de las de toda
+             la vida que llevaba aquí más años que el propio apartamento.</p>
+          <p>Dos camas de matrimonio y un sofá cama en el salón. El balcón da a la calle, y desde
+             él se ven los miradores modernistas de los edificios de enfrente.</p>
+          <h4>Lo que hay dentro</h4>
+          <ul class="servicios">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 10h16M8 14h3"/></svg>Horno y microondas</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Nevera y menaje</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8"/></svg>TV de pantalla plana</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 7h18M3 12h12M3 17h8"/></svg>Aire acondicionado</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg>Lavadora</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="11" rx="1"/><path d="M7 16v4M17 16v4"/></svg>Escritorio</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 21V11h14v10M5 15h14M9 11V7h6v4"/></svg>Balcón a la calle</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 20h18M6 20V9l6-5 6 5v11"/></svg>Vista a monumento</li>
+          </ul>
+          <div class="apt__acc">
+            <a class="btn btn--marca" href="#reservar" data-iman>Consultar fechas</a>
+            <button class="btn btn--linea" type="button" data-abrir="ciudad" data-iman>Ver las 12 fotos</button>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ a pie de todo ============ -->
+<section class="pie-de-todo" id="a-pie">
+  <div class="env">
+    <div data-sube>
+      <p class="rotulo"><b>03</b> A pie de todo</p>
+      <h2 class="titular">Badajoz entero,<br><em>sin coger el coche</em></h2>
+      <p class="entradilla" style="margin-top:1.4rem">
+        Los minutos son andando desde el portal. No hay ninguno que pase de un cuarto de hora.
+      </p>
+    </div>
+
+    <ul class="pila" id="pila">
+      <li>
+        <article class="sitio">
+          <div class="sitio__txt">
+            <p class="sitio__min"><b>2</b><span>minutos andando</span></p>
+            <h3>La Catedral y la Plaza de España</h3>
+            <p>Sales del portal, giras y ya la ves. La Catedral de San Juan Bautista es una
+               fortaleza con aire de iglesia: torre maciza, almenas y un claustro gótico dentro.
+               Alrededor, la Plaza de España y el Ayuntamiento con su fachada de colores.</p>
+            <p class="sitio__metros">102 m en línea recta · Plaza de España a 101 m</p>
+          </div>
+          <div class="sitio__foto">
+            <img src="img/calle-catedral-1600.jpg" alt="Calle del casco antiguo de Badajoz con la torre de la Catedral al fondo" loading="lazy" width="1600" height="1066">
+          </div>
+        </article>
+      </li>
+      <li>
+        <article class="sitio">
+          <div class="sitio__txt">
+            <p class="sitio__min"><b>5</b><span>minutos andando</span></p>
+            <h3>La Giralda y las calles de siempre</h3>
+            <p>La Giralda de Badajoz es un capricho de ladrillo rojo y azulejo que imita a la de
+               Sevilla, levantado a principios del siglo pasado. Está en el corazón de la zona de
+               tapas: Menacho, Zurbarán, San Juan y las plazas que las unen.</p>
+            <p class="sitio__metros">329 m en línea recta · Museo de Bellas Artes a 340 m</p>
+          </div>
+          <div class="sitio__foto">
+            <img src="img/giralda-1600.jpg" alt="La Giralda de Badajoz, edificio modernista de ladrillo rojo" loading="lazy" width="1600" height="1052">
+          </div>
+        </article>
+      </li>
+      <li>
+        <article class="sitio">
+          <div class="sitio__txt">
+            <p class="sitio__min"><b>7</b><span>minutos andando</span></p>
+            <h3>La Plaza Alta y la Alcazaba</h3>
+            <p>La estampa de Badajoz: fachadas rojas con esgrafiado blanco a un lado, arquería de
+               piedra al otro. Justo encima arranca la Alcazaba almohade, la más grande de Europa,
+               con sus murallas y el jardín de la Galera.</p>
+            <p class="sitio__metros">437 m en línea recta · Alcazaba a 643 m</p>
+          </div>
+          <div class="sitio__foto">
+            <img src="img/plaza-alta-1600.jpg" alt="La Plaza Alta de Badajoz con sus fachadas rojas y el esgrafiado blanco" loading="lazy" width="1600" height="861">
+          </div>
+        </article>
+      </li>
+      <li>
+        <article class="sitio">
+          <div class="sitio__txt">
+            <p class="sitio__min"><b>14</b><span>minutos andando</span></p>
+            <h3>El Puente de Palmas y el Guadiana</h3>
+            <p>Cruzando la Puerta de Palmas se llega al puente del siglo XVI, treinta y dos ojos
+               de granito sobre el río. Al atardecer se enciende entero y es el paseo que hace
+               todo el mundo en Badajoz, turistas o no.</p>
+            <p class="sitio__metros">907 m en línea recta · Puerta de Palmas a 615 m</p>
+          </div>
+          <div class="sitio__foto">
+            <img src="img/puente-palmas-1600.jpg" alt="El puente de Palmas sobre el Guadiana al atardecer" loading="lazy" width="1600" height="1077">
+          </div>
+        </article>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ reseñas ============ -->
+<section class="dicen tras-pila" id="dicen">
+  <div class="env">
+    <div data-sube>
+      <p class="rotulo"><b>04</b> Lo que cuentan</p>
+      <h2 class="titular">Palabras de quien<br><em>ya durmió aquí</em></h2>
+    </div>
+    <div class="dicen__rej">
+      <figure class="resena" data-sube>
+        <p class="resena__comillas" aria-hidden="true">“</p>
+        <h3>Todo genial</h3>
+        <blockquote>La casa estaba perfectamente preparada cuando llegamos. Además, Víctor nos dio facilidades y estuvo atento en todo momento. Buena ubicación y limpieza.</blockquote>
+        <figcaption>Marina</figcaption>
+      </figure>
+      <figure class="resena" data-sube>
+        <p class="resena__comillas" aria-hidden="true">“</p>
+        <h3>Muy recomendable</h3>
+        <blockquote>El piso de Víctor es cómodo, ubicación perfecta, cerca al Ayuntamiento y a muchos sitios donde comer o tomar algo. Víctor ha sido muy amable y ha tenido detalles que agradezco. El wifi funcionó de maravilla y pude trabajar tranquilamente.</blockquote>
+        <figcaption>Leyder</figcaption>
+      </figure>
+      <figure class="resena" data-sube>
+        <p class="resena__comillas" aria-hidden="true">“</p>
+        <h3>En la mejor zona</h3>
+        <blockquote>Desde el primer contacto todo ha sido excepcional, Víctor siempre atento a todo. El apartamento en la mejor zona, todo estaba muy limpio, la habitación amplia, la cama cómoda, el salón amplio, el apartamento muy luminoso.</blockquote>
+        <figcaption>David</figcaption>
+      </figure>
+      <figure class="resena" data-sube>
+        <p class="resena__comillas" aria-hidden="true">“</p>
+        <h3>Excelente anfitrión</h3>
+        <blockquote>Excelente anfitrión con un lugar increíblemente cómodo y limpio. La comunicación fue excelente y la ubicación era perfecta. ¡Definitivamente recomendaría este alojamiento a cualquiera que busque una estancia agradable!</blockquote>
+        <figcaption>Jose</figcaption>
+      </figure>
+      <figure class="resena" data-sube>
+        <p class="resena__comillas" aria-hidden="true">“</p>
+        <h3>Excepcional</h3>
+        <blockquote>Ubicación perfecta. Fuimos muy bien atendidos por Víctor, el propietario. Limpio y cómodo. Parking cerca. Muy recomendable.</blockquote>
+        <figcaption>Alejandro</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ dónde ============ -->
+<section class="donde" id="donde">
+  <div class="env">
+    <div class="donde__rej">
+      <div data-sube>
+        <p class="rotulo"><b>05</b> Cómo llegar</p>
+        <h2 class="titular">Calle Ramón<br><em>Albarrán, 9</em></h2>
+        <ul class="senas">
+          <li><b>Dirección</b><span>C. Ramón Albarrán, 9 · 06002 Badajoz</span></li>
+          <li><b>Teléfono</b><a href="tel:+34618088804">+34 618 088 804</a></li>
+          <li><b>Correo</b><a href="mailto:enelcorazondelaciudad@gmail.com">enelcorazondelaciudad@gmail.com</a></li>
+          <li><b>Coordenadas</b><span>38°52′39″N · 6°58′11″O</span></li>
+          <li><b>Entrada</b><span>Víctor entrega las llaves en mano</span></li>
+        </ul>
+      </div>
+      <div class="mapa" id="mapa" data-sube>
+        <div class="mapa__consent" id="mapa-consent">
+          <p>El mapa lo carga Google y pone sus propias cookies. Solo se carga si lo pides.</p>
+          <button class="btn btn--linea" type="button" id="mapa-btn">Ver el mapa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ reservar ============ -->
+<section class="reservar" id="reservar">
+  <div class="env-txt">
+    <h2>¿Nos vemos en Badajoz?</h2>
+    <p>Escribe o llama a Víctor y te dice qué apartamento está libre en tus fechas.
+       Si reservas directamente, el precio es el mejor que vas a encontrar.</p>
+    <div class="reservar__acc">
+      <a class="btn btn--marca" href="tel:+34618088804" data-iman>Llamar a Víctor</a>
+      <a class="btn btn--linea" href="mailto:enelcorazondelaciudad@gmail.com" data-iman>Escribir un correo</a>
+      <a class="btn btn--linea" href="https://www.elcorazondelaciudad.com/es" target="_blank" rel="noopener" data-iman>Ver disponibilidad</a>
+    </div>
+    <p class="reservar__nota">Apartamentos turísticos registrados · Casco antiguo de Badajoz</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ pie ============ -->
+<footer class="pie">
+  <div class="env">
+    <div class="pie__rej">
+      <div>
+        <a class="marca" href="#" style="margin-bottom:1rem">
+          <img src="img/marca.svg" alt="" width="100" height="92">
+          <span>El Corazón de la Ciudad<i>Apartamentos · Badajoz</i></span>
+        </a>
+        <p>Dos apartamentos turísticos de 85 m² en la calle Ramón Albarrán, en pleno casco
+           antiguo de Badajoz. A dos minutos de la Catedral.</p>
+      </div>
+      <div>
+        <h4>La casa</h4>
+        <ul>
+          <li><a href="#portal">El portal</a></li>
+          <li><a href="#apartamentos">Los apartamentos</a></li>
+          <li><a href="#a-pie">Qué hay cerca</a></li>
+          <li><a href="#dicen">Lo que cuentan</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="tel:+34618088804">+34 618 088 804</a></li>
+          <li><a href="mailto:enelcorazondelaciudad@gmail.com">enelcorazondelaciudad@gmail.com</a></li>
+          <li><a href="#donde">C. Ramón Albarrán, 9</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie__fin">
+      <span>© <span id="anno">2026</span> El Corazón de la Ciudad · Badajoz</span>
+      <nav>
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="privacidad.html">Privacidad</a>
+        <a href="#" id="abrir-cookies">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ visor de fotos ============ -->
+<div class="visor" id="visor" hidden role="dialog" aria-modal="true" aria-label="Fotos del apartamento">
+  <div class="visor__barra">
+    <span class="visor__cuenta" id="visor-cuenta">1 / 1</span>
+    <button class="visor__x" type="button" id="visor-x" aria-label="Cerrar las fotos">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <div class="visor__marco">
+    <img id="visor-img" src="" alt="">
+    <button class="visor__nav visor__nav--ant" type="button" id="visor-ant" aria-label="Foto anterior">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="visor__nav visor__nav--sig" type="button" id="visor-sig" aria-label="Foto siguiente">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+  <p class="visor__pie" id="visor-pie"></p>
+</div>
+
+<!-- ============ cookies ============ -->
+<div class="cookies" id="cookies" hidden role="region" aria-label="Aviso de cookies">
+  <p>Esta web no usa cookies de seguimiento. Solo guarda si has aceptado este aviso
+     y, si pulsas «Ver el mapa», las que ponga Google en ese momento.</p>
+  <div class="cookies__acc">
+    <button class="btn btn--marca" type="button" id="ck-si">Aceptar</button>
+    <button class="btn btn--linea" type="button" id="ck-no">Solo lo imprescindible</button>
+  </div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-aro" id="cursor-aro" aria-hidden="true"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="js/callejero.js"></script>
+<script src="js/plano.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+[
+ {
+  "nombre": "Plaza de España",
+  "tipo": "square",
+  "m": 101,
+  "x": -17,
+  "y": -100
+ },
+ {
+  "nombre": "Catedral de San Juan Bautista",
+  "tipo": "place_of_worship",
+  "m": 102,
+  "x": 16,
+  "y": -101
+ },
+ {
+  "nombre": "Museo Catedralicio Badajoz",
+  "tipo": "museum",
+  "m": 104,
+  "x": 70,
+  "y": -78
+ },
+ {
+  "nombre": "Luis de Morales",
+  "tipo": "memorial",
+  "m": 140,
+  "x": -10,
+  "y": -140
+ },
+ {
+  "nombre": "Ayuntamiento de Badajoz",
+  "tipo": "townhall",
+  "m": 161,
+  "x": 0,
+  "y": -161
+ },
+ {
+  "nombre": "Manuel Godoy",
+  "tipo": "memorial",
+  "m": 171,
+  "x": -158,
+  "y": 66
+ },
+ {
+  "nombre": "Parroquia San Andrés Apóstol",
+  "tipo": "place_of_worship",
+  "m": 179,
+  "x": 178,
+  "y": -18
+ },
+ {
+  "nombre": "Monumento a Matilde Landa",
+  "tipo": "memorial",
+  "m": 202,
+  "x": 193,
+  "y": -62
+ },
+ {
+  "nombre": "Iglesia San Juan Bautista",
+  "tipo": "place_of_worship",
+  "m": 208,
+  "x": -200,
+  "y": 58
+ },
+ {
+  "nombre": "Monumento a Zurbarán",
+  "tipo": "memorial",
+  "m": 220,
+  "x": 214,
+  "y": -52
+ },
+ {
+  "nombre": "Plaza Sor Agustina",
+  "tipo": "square",
+  "m": 268,
+  "x": -175,
+  "y": 203
+ },
+ {
+  "nombre": "Plaza López de Ayala",
+  "tipo": "square",
+  "m": 275,
+  "x": -242,
+  "y": -129
+ },
+ {
+  "nombre": "Baluarte de San Roque",
+  "tipo": "archaeological_site",
+  "m": 298,
+  "x": -30,
+  "y": 297
+ },
+ {
+  "nombre": "Puerta Pilar",
+  "tipo": "city_gate",
+  "m": 304,
+  "x": -126,
+  "y": 276
+ },
+ {
+  "nombre": "Iglesia de la Purísima Concepción",
+  "tipo": "place_of_worship",
+  "m": 307,
+  "x": 97,
+  "y": -291
+ },
+ {
+  "nombre": "Giraldilla",
+  "tipo": "attraction",
+  "m": 329,
+  "x": -162,
+  "y": -287
+ },
+ {
+  "nombre": "Casa Álvarez",
+  "tipo": "monument",
+  "m": 337,
+  "x": -99,
+  "y": -322
+ },
+ {
+  "nombre": "Museo de Bellas Artes de Badajoz",
+  "tipo": "museum",
+  "m": 340,
+  "x": -178,
+  "y": -289
+ },
+ {
+  "nombre": "Plaza de la Soledad",
+  "tipo": "square",
+  "m": 341,
+  "x": -118,
+  "y": -320
+ },
+ {
+  "nombre": "Baluarte de Santa María (s. XVII)",
+  "tipo": "archaeological_site",
+  "m": 342,
+  "x": 304,
+  "y": 157
+ },
+ {
+  "nombre": "Las 3 Campanas",
+  "tipo": "monument",
+  "m": 346,
+  "x": -130,
+  "y": -321
+ },
+ {
+  "nombre": "Ermita de la Soledad",
+  "tipo": "wayside_shrine",
+  "m": 349,
+  "x": -157,
+  "y": -312
+ },
+ {
+  "nombre": "Plaza Dragones de Hernán Cortés",
+  "tipo": "square",
+  "m": 362,
+  "x": -263,
+  "y": 250
+ },
+ {
+  "nombre": "Escudo Casa noble de \"Los Calderas\"",
+  "tipo": "monument",
+  "m": 389,
+  "x": 388,
+  "y": -26
+ },
+ {
+  "nombre": "Monumento a Los Caídos",
+  "tipo": "monument",
+  "m": 396,
+  "x": 376,
+  "y": 124
+ },
+ {
+  "nombre": "Plaza Santa María",
+  "tipo": "square",
+  "m": 402,
+  "x": 39,
+  "y": -400
+ },
+ {
+  "nombre": "Plaza San Agustín",
+  "tipo": "square",
+  "m": 433,
+  "x": -141,
+  "y": -409
+ },
+ {
+  "nombre": "Plaza Alta",
+  "tipo": "attraction",
+  "m": 437,
+  "x": 129,
+  "y": -417
+ },
+ {
+  "nombre": "Yacimiento arqueológico \"El Campillo\"",
+  "tipo": "archaeological_site",
+  "m": 438,
+  "x": 262,
+  "y": -352
+ },
+ {
+  "nombre": "Cruz de los Caídos",
+  "tipo": "monument",
+  "m": 445,
+  "x": 444,
+  "y": 18
+ },
+ {
+  "nombre": "Acceso a la Galería de Fusileros de San Pedro",
+  "tipo": "museum",
+  "m": 459,
+  "x": 374,
+  "y": -266
+ },
+ {
+  "nombre": "Juan Marín de Rodezno",
+  "tipo": "memorial",
+  "m": 460,
+  "x": 98,
+  "y": -449
+ },
+ {
+  "nombre": "Parroquia de San Agustín",
+  "tipo": "place_of_worship",
+  "m": 461,
+  "x": -132,
+  "y": -442
+ },
+ {
+  "nombre": "Baluarte de la Trinidad",
+  "tipo": "archaeological_site",
+  "m": 468,
+  "x": 468,
+  "y": -3
+ },
+ {
+  "nombre": "Puerta de Trinidad y Poterna",
+  "tipo": "city_gate",
+  "m": 471,
+  "x": 466,
+  "y": -70
+ },
+ {
+  "nombre": "Plaza Santa Ana",
+  "tipo": "square",
+  "m": 481,
+  "x": -272,
+  "y": -396
+ },
+ {
+  "nombre": "Plaza San José",
+  "tipo": "square",
+  "m": 491,
+  "x": 58,
+  "y": -487
+ },
+ {
+  "nombre": "Baluarte de San Pedro",
+  "tipo": "archaeological_site",
+  "m": 494,
+  "x": 382,
+  "y": -313
+ },
+ {
+  "nombre": "San Vicente de Paúl",
+  "tipo": "memorial",
+  "m": 501,
+  "x": -500,
+  "y": 35
+ },
+ {
+  "nombre": "Puerta de Mérida",
+  "tipo": "city_gate",
+  "m": 513,
+  "x": 308,
+  "y": -411
+ },
+ {
+  "nombre": "Cruz del Jubileo (S. XVII)",
+  "tipo": "memorial",
+  "m": 518,
+  "x": 23,
+  "y": -517
+ },
+ {
+  "nombre": "Museo del Carnaval de Badajoz",
+  "tipo": "museum",
+  "m": 520,
+  "x": -458,
+  "y": 246
+ },
+ {
+  "nombre": "Plaza Alcazaba",
+  "tipo": "square",
+  "m": 522,
+  "x": 98,
+  "y": -513
+ },
+ {
+  "nombre": "Iglesia Santo Domingo",
+  "tipo": "place_of_worship",
+  "m": 529,
+  "x": -529,
+  "y": 0
+ },
+ {
+  "nombre": "Museo Arqueológico Provincial",
+  "tipo": "museum",
+  "m": 548,
+  "x": 122,
+  "y": -534
+ },
+ {
+  "nombre": "Monumento de la Hispanidad",
+  "tipo": "monument",
+  "m": 573,
+  "x": -565,
+  "y": 98
+ },
+ {
+  "nombre": "Monumento en memoria del General Menacho",
+  "tipo": "memorial",
+  "m": 576,
+  "x": -531,
+  "y": 225
+ },
+ {
+  "nombre": "Monumento a Padre López",
+  "tipo": "memorial",
+  "m": 577,
+  "x": 7,
+  "y": 577
+ },
+ {
+  "nombre": "Baluarte de Santiago",
+  "tipo": "archaeological_site",
+  "m": 579,
+  "x": -529,
+  "y": 233
+ },
+ {
+  "nombre": "Iglesia de Santa María de Calatrava",
+  "tipo": "ruins",
+  "m": 597,
+  "x": 212,
+  "y": -558
+ },
+ {
+  "nombre": "Puerta de Palmas",
+  "tipo": "city_gate",
+  "m": 615,
+  "x": -511,
+  "y": -342
+ },
+ {
+  "nombre": "Plaza Pedro Callejo",
+  "tipo": "square",
+  "m": 626,
+  "x": -320,
+  "y": 539
+ },
+ {
+  "nombre": "Monumento a Carolina Coronado",
+  "tipo": "memorial",
+  "m": 641,
+  "x": -637,
+  "y": -64
+ },
+ {
+  "nombre": "Alcazaba de Badajoz",
+  "tipo": "castle",
+  "m": 643,
+  "x": 97,
+  "y": -635
+ },
+ {
+  "nombre": "MEIAC - Museo Extremeño e Iberoamericano de Arte Contemporáneo",
+  "tipo": "museum",
+  "m": 666,
+  "x": -145,
+  "y": 650
+ },
+ {
+  "nombre": "Ancla",
+  "tipo": "memorial",
+  "m": 674,
+  "x": -479,
+  "y": 474
+ },
+ {
+  "nombre": "Capitel Romano Jónico",
+  "tipo": "archaeological_site",
+  "m": 679,
+  "x": -659,
+  "y": -164
+ },
+ {
+  "nombre": "Monumento a La Policía",
+  "tipo": "monument",
+  "m": 688,
+  "x": -687,
+  "y": 31
+ },
+ {
+  "nombre": "Ibn Marwan",
+  "tipo": "memorial",
+  "m": 691,
+  "x": -81,
+  "y": -686
+ },
+ {
+  "nombre": "Baluarte San José",
+  "tipo": "archaeological_site",
+  "m": 739,
+  "x": -737,
+  "y": 50
+ },
+ {
+  "nombre": "Centro Evangélico Casa de Dios",
+  "tipo": "place_of_worship",
+  "m": 751,
+  "x": 30,
+  "y": 751
+ },
+ {
+  "nombre": "Plaza de los Milagros",
+  "tipo": "square",
+  "m": 757,
+  "x": 757,
+  "y": 21
+ },
+ {
+  "nombre": "Parroquia de San Juan de Ribera",
+  "tipo": "place_of_worship",
+  "m": 773,
+  "x": 14,
+  "y": 773
+ },
+ {
+  "nombre": "Baluarte de San Vicente (s. XVII)",
+  "tipo": "archaeological_site",
+  "m": 774,
+  "x": -749,
+  "y": -192
+ },
+ {
+  "nombre": "Plaza General Neila",
+  "tipo": "square",
+  "m": 806,
+  "x": 796,
+  "y": -123
+ },
+ {
+  "nombre": "Baluarte San Vicente (Auditorio municipal)",
+  "tipo": "archaeological_site",
+  "m": 807,
+  "x": -803,
+  "y": -74
+ },
+ {
+  "nombre": "Puente de la Autonomía",
+  "tipo": "bridge",
+  "m": 886,
+  "x": -385,
+  "y": -798
+ },
+ {
+  "nombre": "Parroquia Santísima Trinidad",
+  "tipo": "place_of_worship",
+  "m": 887,
+  "x": 883,
+  "y": 93
+ },
+ {
+  "nombre": "Puente de Palmas",
+  "tipo": "bridge",
+  "m": 907,
+  "x": -684,
+  "y": -595
+ },
+ {
+  "nombre": "Iglesia Evangélica Centro Cristiano Esperanza",
+  "tipo": "place_of_worship",
+  "m": 913,
+  "x": -192,
+  "y": 892
+ },
+ {
+  "nombre": "Iglesia de San José",
+  "tipo": "place_of_worship",
+  "m": 974,
+  "x": -781,
+  "y": 582
+ },
+ {
+  "nombre": "Iglesia Evangélica Camino al Cielo",
+  "tipo": "place_of_worship",
+  "m": 984,
+  "x": 982,
+  "y": -53
+ },
+ {
+  "nombre": "Parroquia de San Roque",
+  "tipo": "place_of_worship",
+  "m": 1033,
+  "x": 969,
+  "y": -359
+ },
+ {
+  "nombre": "Parroquia Nuestra Señora de Gracia",
+  "tipo": "place_of_worship",
+  "m": 1066,
+  "x": -43,
+  "y": 1065
+ },
+ {
+  "nombre": "Plaza Manuel Bellerino",
+  "tipo": "square",
+  "m": 1110,
+  "x": 129,
+  "y": 1102
+ },
+ {
+  "nombre": "Puente de la Universidad",
+  "tipo": "bridge",
+  "m": 1173,
+  "x": -1118,
+  "y": -353
+ },
+ {
+  "nombre": "Hornabeque del Puente de Palmas",
+  "tipo": "archaeological_site",
+  "m": 1196,
+  "x": -856,
+  "y": -835
+ },
+ {
+  "nombre": "Parroquia Jesús Obrero",
+  "tipo": "place_of_worship",
+  "m": 1201,
+  "x": 711,
+  "y": 967
+ },
+ {
+  "nombre": "Fuerte de San Cristobal",
+  "tipo": "archaeological_site",
+  "m": 1264,
+  "x": -289,
+  "y": -1230
+ },
+ {
+  "nombre": "Estatua de Hernando de Soto",
+  "tipo": "memorial",
+  "m": 1320,
+  "x": -1080,
+  "y": 759
+ },
+ {
+  "nombre": "Monumento en memoria de José Martí",
+  "tipo": "memorial",
+  "m": 1389,
+  "x": 693,
+  "y": 1204
+ }
+]

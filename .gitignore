@@ -1,0 +1,10 @@
+# Originales a 2048 px descargados de la web del cliente (13 MB).
+# La web sirve las versiones de img/; esto es solo material de partida.
+fotos-origen/
+
+# Capturas que generan verificar.mjs y mirar.mjs
+pruebas/
+
+node_modules/
+.DS_Store
+Thumbs.db
