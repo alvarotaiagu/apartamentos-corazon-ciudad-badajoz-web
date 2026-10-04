@@ -29,13 +29,6 @@
   const FONDO   = '#140F3A';
   const ALFA    = { 4: .9, 3: .85, 2: .6, 1: .34 };
 
-  /* Dos maneras de contarlo, se elige con ?hero=a o ?hero=b:
-       a · un solo deszoom suave mientras salen los caminos  (por defecto)
-       b · la cámara se retira a tirones, uno por cada camino que llega
-     Las dos arrancan YA ampliadas, a ras de calle: así desde el primer
-     fotograma hay mapa y el callejero se traza encima. */
-  const VERSION = (new URLSearchParams(location.search).get('hero') || 'a').toLowerCase() === 'b' ? 'b' : 'a';
-
   const CERCA = 340;                 // metros de encuadre a ras de calle
   const PAUSA = 0.46;                // hasta aquí solo se dibuja el callejero
   const RITMO = 0.13, LARGO = 0.42;  // cadencia de los caminos (en el tramo final)
@@ -99,28 +92,14 @@
     base = null; posado = false;
   }
 
-  // escalera suave: un tirón de cámara por cada camino que llega (versión b)
-  function escalon(u, n) {
-    let k = 0;
-    for (let i = 0; i < n; i++) {
-      const ini = i === 0 ? 0 : RITMO * (i - 1) + LARGO;
-      const fin = RITMO * i + LARGO;
-      if (u <= ini) break;
-      const d = Math.min(1, (u - ini) / Math.max(0.01, fin - ini));
-      k = (i + (1 - Math.pow(1 - d, 2.4))) / n;
-      if (d < 1) break;
-    }
-    return Math.min(1, k);
-  }
-
   // --- cámara: dónde está y cuánto abarca en cada momento ---
   function camara(t) {
-    // mientras se traza el callejero la cámara no se mueve: a ras de calle
+    // Mientras se traza el callejero la cámara no se mueve: a ras de calle.
+    // Después se retira de un solo tirón, frenando al final, y es ese deszoom
+    // el que hace que quepan los caminos según van saliendo.
     if (t < PAUSA) return { radio: CERCA, cy: 0.42 };
     const u = Math.min(1, (t - PAUSA) / (1 - PAUSA));
-    const k = VERSION === 'b'
-      ? escalon(u, Math.max(1, rutas.length))
-      : 1 - Math.pow(1 - u, 3);
+    const k = 1 - Math.pow(1 - u, 3);
     return { radio: CERCA + (lejos - CERCA) * k, cy: 0.42 + (cyFin - 0.42) * k };
   }
 

@@ -7,13 +7,19 @@ Web de los dos apartamentos turísticos de la calle Ramón Albarrán, 9 (06002 B
 Concepto: **«Cartografía»** — la portada es un plano nocturno del casco antiguo,
 real, con esta coreografía:
 
-1. La cámara **cae desde muy arriba** hasta el portal, mientras el callejero se
-   traza saliendo de la chincheta (que lleva dentro el tejado del logo).
+1. Arranca **ya ampliado**, a ras de calle (340 m de encuadre), y el callejero se
+   traza saliendo de la chincheta, que lleva dentro el tejado del logo.
 2. Aparecen en silueta las **manzanas** del barrio.
-3. Pausa breve a ras de calle.
-4. La cámara **se retira** y, al hacerlo, salen del portal los **recorridos a pie
-   reales** con sus minutos. Se retira justo lo necesario para que quepan: el
-   encuadre final se calcula para que entren la Alcazaba y la Puerta de Palmas.
+3. Con el plano ya hecho, la cámara **se retira de un solo tirón** (340 → 1.250 m,
+   frenando al final) y, según se abre, van saliendo del portal los **recorridos a
+   pie reales** con sus minutos, del más cercano al más lejano. Es el deszoom lo que
+   hace que quepan: el encuadre final se calcula para que entren la Alcazaba (769 m)
+   y la Puerta de Palmas (664 m).
+
+El plano empieza a dibujarse **detrás de la cortina**, casi un segundo antes de que
+esta se levante, y el titular sube mientras la cortina aún sube. Si no, al destaparse
+se ven unos fotogramas de hero vacío y parece que la página se ha colgado;
+`verificar.mjs` mide que, en el instante del destape, el lienzo ya tenga mapa.
 
 En móvil se descartan solos los caminos que no caben (la Puerta de Palmas se
 sale por la izquierda), y las chapas de los minutos nunca bajan del bloque de
