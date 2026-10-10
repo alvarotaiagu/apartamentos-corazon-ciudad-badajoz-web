@@ -218,6 +218,10 @@
   if (pila) {
     const items = $$(':scope > li', pila);
     let disparos = [];
+    // En el móvil la barra del navegador sale y se esconde justo al cambiar de
+    // sentido, y eso cambia innerHeight. Si el hueco de reposo siguiera a
+    // innerHeight, todo lo de debajo daría un salto hacia el lado contrario.
+    let anchoVista = innerWidth, altoVista = innerHeight;
 
     function montarPila() {
       disparos.forEach((d) => d.kill());
@@ -227,7 +231,7 @@
 
       // todas las tarjetas, al alto de la más alta (nunca 100vh)
       const alto = Math.max(...items.map((li) => li.offsetHeight));
-      const cabe = alto < innerHeight * 0.78;
+      const cabe = alto < altoVista * 0.78;
 
       if (!cabe) {
         pila.dataset.plana = '1';
@@ -245,7 +249,7 @@
         li.style.removeProperty('position');
       });
 
-      pila.style.setProperty('--reposo', Math.round(innerHeight * 0.12) + 'px');
+      pila.style.setProperty('--reposo', Math.round(altoVista * 0.12) + 'px');
 
       if (!hayGSAP || quieto) return;
 
@@ -272,7 +276,16 @@
     }
 
     montarPila();
-    addEventListener('resize', () => { clearTimeout(pila._t); pila._t = setTimeout(() => { montarPila(); if (hayGSAP) ScrollTrigger.refresh(); }, 200); });
+    addEventListener('resize', () => {
+      // solo la barra del móvil (mismo ancho, poca altura): no se rehace nada
+      if (innerWidth === anchoVista && Math.abs(innerHeight - altoVista) < 160) return;
+      clearTimeout(pila._t);
+      pila._t = setTimeout(() => {
+        anchoVista = innerWidth; altoVista = innerHeight;
+        montarPila();
+        if (hayGSAP) ScrollTrigger.refresh();
+      }, 200);
+    });
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => { montarPila(); if (hayGSAP) ScrollTrigger.refresh(); });
     }
@@ -333,9 +346,16 @@
   const vCnt   = $('#visor-cuenta');
   let serie = [], idx = 0, antesFoco = null;
 
+  let cargando = null;
   function pintarFoto() {
     const [n, alt] = serie[idx];
-    vImg.src = 'img/' + n + '-1600.jpg';
+    // primero la de 800 (casi siempre ya en caché) y la grande cuando llegue:
+    // en el móvil, si no, se quedaba a la vista la foto anterior mientras bajaba
+    vImg.src = 'img/' + n + '-800.jpg';
+    const grande = new Image();
+    cargando = grande;
+    grande.onload = () => { if (cargando === grande) vImg.src = grande.src; };
+    grande.src = 'img/' + n + '-1600.jpg';
     vImg.alt = alt;
     vPie.textContent = alt;
     vCnt.textContent = (idx + 1) + ' / ' + serie.length;
@@ -384,7 +404,11 @@
   $$('[data-galeria]').forEach((g) => {
     const clave = g.dataset.galeria;
     $$('.gal__btn', g).forEach((b) => {
-      b.addEventListener('click', () => abrirVisor(clave, parseInt(b.dataset.i, 10) || 0));
+      // la miniatura NO va en el mismo orden que la serie: se busca por nombre
+      const img = $('img', b);
+      const nombre = img ? img.getAttribute('src').split('?')[0].replace(/^.*\/|-800\.jpg$/g, '') : '';
+      const i = (FOTOS[clave] || []).findIndex(([n]) => n === nombre);
+      b.addEventListener('click', () => abrirVisor(clave, i >= 0 ? i : 0));
       b.setAttribute('aria-label', 'Ver las fotos de este apartamento');
     });
   });

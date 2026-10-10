@@ -309,6 +309,9 @@
   addEventListener('resize', () => {
     clearTimeout(remedir);
     remedir = setTimeout(() => {
+      // la barra del móvil lanza resize sin que el lienzo (100svh) cambie
+      const r = lienzo.getBoundingClientRect();
+      if (Math.round(r.width) === W && Math.round(r.height) === H) return;
       const yaEstaba = posado;
       medir();
       if (yaEstaba) t0 = performance.now() - DUR;   // reencuadra sin repetir el viaje
